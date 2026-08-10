@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<script>(function(){var d='escuro',t;try{t=localStorage.getItem('elevenTema');}catch(e){}var m=t||d;document.documentElement.classList.add(m==='escuro'?'escuro':'claro');})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eleven — Estoque de Seminovas (Proprietário)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#0b0b0b; --preto2:#121212; --card:#181818; --card2:#1f1f1f;
+    --vermelho:#D60D20; --vermelho-esc:#B00A1A;
+    --dourado:#B8933A; --dourado-cl:#d8b45f;
+    --branco:#fff; --cinza:#9a9a9a; --cinza-cl:#c9c9c9; --borda:#282828; --verde:#1faf54;
+    --titulo:'Barlow Condensed',sans-serif; --corpo:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--preto);color:var(--branco);font-family:var(--corpo);font-size:14px;line-height:1.5}
+  a{color:inherit}
+  header.top{background:var(--preto2);border-bottom:4px solid var(--vermelho);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  header .brand{font-family:var(--titulo);font-weight:700;font-size:24px;letter-spacing:1px;text-transform:uppercase}
+  header .brand small{color:var(--dourado);font-size:13px;display:block;letter-spacing:2px}
+  header a.voltar{color:var(--cinza);text-decoration:none;font-size:12px;letter-spacing:.5px}
+  .wrap{max-width:1200px;margin:0 auto;padding:22px 20px 80px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+  h2{font-family:var(--titulo);font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;margin:0 0 4px}
+  .sub{color:var(--cinza);font-size:12.5px;margin:0 0 18px}
+  .painel{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:20px}
+  .grp{border-top:1px solid var(--borda);margin-top:18px;padding-top:16px}
+  .grp:first-of-type{border-top:0;margin-top:0;padding-top:0}
+  .grp h3{font-family:var(--titulo);font-weight:600;font-size:15px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dourado);margin:0 0 12px}
+  .row{display:grid;gap:12px}
+  .r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:520px){.r2,.r3{grid-template-columns:1fr}}
+  label{display:block;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--cinza-cl);margin-bottom:5px;font-weight:600}
+  input,select,textarea{width:100%;background:var(--preto2);border:1px solid var(--borda);border-radius:8px;color:var(--branco);
+    font-family:var(--corpo);font-size:14px;padding:10px 11px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--vermelho)}
+  textarea{resize:vertical;min-height:70px}
+  .btn{border:0;border-radius:8px;padding:12px 18px;font-family:var(--titulo);font-weight:600;font-size:15px;letter-spacing:1px;
+    text-transform:uppercase;cursor:pointer;color:#fff}
+  .btn-red{background:var(--vermelho)}.btn-red:hover{background:var(--vermelho-esc)}
+  .btn-gold{background:var(--dourado);color:#111}.btn-gold:hover{background:var(--dourado-cl)}
+  .btn-ghost{background:transparent;border:1px solid var(--borda);color:var(--cinza-cl)}
+  .btn-ghost:hover{border-color:var(--vermelho);color:#fff}
+  .acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  /* fotos */
+  #fotoDrop{border:2px dashed var(--borda);border-radius:10px;padding:18px;text-align:center;color:var(--cinza);cursor:pointer;transition:.15s}
+  #fotoDrop:hover{border-color:var(--vermelho);color:var(--cinza-cl)}
+  .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .thumb{position:relative;width:84px;height:64px;border-radius:6px;overflow:hidden;border:1px solid var(--borda);background:#000}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb button{position:absolute;top:2px;right:2px;width:18px;height:18px;border:0;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:12px;line-height:1;cursor:pointer}
+  .thumb.capa::after{content:'CAPA';position:absolute;bottom:0;left:0;right:0;background:var(--vermelho);font-size:8px;text-align:center;letter-spacing:1px;padding:1px}
+  /* lista estoque */
+  .estoque-item{display:flex;gap:12px;align-items:center;background:var(--card2);border:1px solid var(--borda);border-radius:10px;padding:10px;margin-bottom:10px}
+  .estoque-item img{width:66px;height:50px;object-fit:cover;border-radius:6px;background:#000;flex:0 0 auto}
+  .estoque-item .info{flex:1;min-width:0}
+  .estoque-item .info b{font-family:var(--titulo);font-size:16px;letter-spacing:.5px}
+  .estoque-item .info span{display:block;color:var(--cinza);font-size:11.5px}
+  .estoque-item .mini{display:flex;gap:6px}
+  .mini button{border:0;background:var(--preto2);color:var(--cinza-cl);border:1px solid var(--borda);border-radius:6px;padding:6px 9px;font-size:11px;cursor:pointer}
+  .mini button:hover{border-color:var(--vermelho);color:#fff}
+  /* preview card (igual ao site) */
+  .preview-card{background:var(--card);border:1px solid var(--borda);border-radius:12px;overflow:hidden;max-width:340px;margin:0 auto}
+  .pc-img{height:200px;background:#000 center/cover no-repeat;position:relative}
+  .pc-badge{position:absolute;top:10px;left:10px;background:var(--vermelho);font-family:var(--titulo);letter-spacing:1px;font-size:11px;padding:3px 9px;border-radius:4px;text-transform:uppercase}
+  .pc-body{padding:16px}
+  .pc-body h4{font-family:var(--titulo);font-size:21px;letter-spacing:.5px;margin:0 0 2px;text-transform:uppercase}
+  .pc-body .tipo{color:var(--dourado);font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .chip{background:var(--preto2);border:1px solid var(--borda);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--cinza-cl)}
+  .pc-preco{font-family:var(--titulo);font-size:24px;color:var(--verde);letter-spacing:.5px;margin-top:6px}
+  .aviso{font-size:12px;padding:10px 12px;border-radius:8px;margin-top:12px}
+  .aviso.ok{background:rgba(31,175,84,.12);border-left:3px solid var(--verde);color:#bde8cc}
+  .aviso.info{background:rgba(184,147,58,.12);border-left:3px solid var(--dourado);color:#e8d6a8}
+  .tag-livre{display:inline-flex;gap:6px;align-items:center;background:var(--preto2);border:1px solid var(--borda);border-radius:20px;padding:4px 10px;font-size:12px;margin:4px 6px 0 0}
+  .tag-livre button{border:0;background:transparent;color:var(--vermelho);cursor:pointer;font-size:13px}
+</style>
+<style>
+.tema-fx{position:fixed;top:12px;right:12px;z-index:9999;width:42px;height:42px;border-radius:50%;
+ border:1px solid rgba(128,128,128,.35);background:rgba(255,255,255,.9);cursor:pointer;font-size:19px;line-height:1;
+ display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.tema-fx:hover{transform:scale(1.06)}
+html.escuro .tema-fx{background:rgba(28,28,28,.92);border-color:rgba(255,255,255,.22)}
+html.escuro .tema-fx .i-lua{display:none}html.escuro .tema-fx .i-sol{display:inline}
+html.claro  .tema-fx .i-sol{display:none}html.claro  .tema-fx .i-lua{display:inline}
+@media print{.tema-fx{display:none!important}}
+
+html.claro{--preto:#EEEFF1;--preto2:#ffffff;--card:#ffffff;--card2:#f4f6f8;
+ --branco:#17181A;--cinza:#5A5C60;--cinza-cl:#3A3C40;--borda:#DDDFE2}
+html.claro body{background:#EEEFF1;color:#17181A}
+html.claro header.top{background:#ffffff}
+html.claro .btn-ghost{color:#3A3C40}
+html.claro input,html.claro select,html.claro textarea{background:#ffffff;color:#17181A}
+html.claro .thumb button{background:rgba(0,0,0,.6)}
+</style>
+</head>
+<body>
+<button class="tema-fx" onclick="elevenToggleTema()" title="Modo claro / escuro" aria-label="Alternar modo claro/escuro"><span class="i-sol">&#9728;</span><span class="i-lua">&#127769;</span></button>
+<script>
+function elevenToggleTema(){var h=document.documentElement,dk=h.classList.contains('escuro');
+  h.classList.remove('escuro','claro');h.classList.add(dk?'claro':'escuro');
+  try{localStorage.setItem('elevenTema',dk?'claro':'escuro');}catch(e){}}
+</script>
+
+
+<header class="top">
+  <div class="brand">ELEVEN <small>ESTOQUE · SEMINOVAS</small></div>
+  <a class="voltar" href="../index.html#/vendedor">‹ Voltar ao Portal</a>
+</header>
+
+<div class="wrap">
+
+  <!-- ================= FORM ================= -->
+  <section>
+    <div class="painel">
+      <h2>Incluir seminova no estoque</h2>
+      <p class="sub">Cadastre a máquina com base no laudo de avaliação. Preencha, adicione as fotos e clique em <b>Salvar no estoque</b>. No fim, exporte o <b>seminovas.json</b> e publique no site.</p>
+
+      <div class="grp">
+        <h3>Identificação</h3>
+        <div class="row r2">
+          <div><label>Tipo de equipamento</label>
+            <select id="tipo">
+              <option>Empilhadeira Contrabalançada</option>
+              <option>Empilhadeira Retrátil</option>
+              <option>Empilhadeira Patolada</option>
+              <option>Rebocador / Tratora</option>
+              <option>Transpaleteira Elétrica</option>
+              <option>Selecionadora de Pedidos</option>
+              <option>Empilhadeira Manual / Semi</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div><label>Marca</label><input id="marca" placeholder="EP, Toyota, Hyster..."></div>
+        </div>
+        <div class="row r2" style="margin-top:12px">
+          <div><label>Modelo</label><input id="modelo" placeholder="EFL302 / F4 / CPCD30"></div>
+          <div><label>Ano (fab./modelo)</label><input id="ano" placeholder="2021"></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>Ficha técnica</h3>
+        <div class="row r2">
+          <div><label>Motor / Força motriz</label>
+            <select id="motor">
+              <option>Elétrica — Lítio (Li-Ion)</option>
+              <option>Elétrica — Chumbo-Ácido</option>
+              <option>GLP (Gás)</option>
+              <option>Diesel</option>
+              <option>Gasolina</option>
+              <option>Dupla (GLP/Gasolina)</option>
+            </select>
+          </div>
+          <div><label>Capacidade de carga</label><input id="capacidade" placeholder="3.000 kg"></div>
+        </div>
+        <div class="row r3" style="margin-top:12px">
+          <div><label>Torre / Mastro</label>
+            <select id="torreTipo">
+              <option value="">—</option>
+              <option>Simplex</option><option>Duplex</option><option>Triplex</option><option>Quádruplo</option>
+            </select>
+          </div>
+          <div><label>Elevação (torre)</label><input id="torreAltura" placeholder="4.800 mm"></div>
+          <div><label>Centro de carga</label><input id="centro" placeholder="500 mm"></div>
+        </div>
+        <div class="row r3" style="margin-top:12px">
+          <div><label>Horímetro</label><input id="horimetro" placeholder="1.200 h"></div>
+          <div><label>Cor / Pintura</label><input id="cor" placeholder="Vermelha — repintada"></div>
+          <div><label>Estado geral</label>
+            <select id="estado">
+              <option>Excelente</option><option selected>Bom</option><option>Regular</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>Comercial</h3>
+        <div class="row r2">
+          <div><label>Preço (R$)</label><input id="preco" inputmode="numeric" placeholder="68000"></div>
+          <div><label>Disponibilidade</label>
+            <select id="disp">
+              <option value="true">Disponível — pronta entrega</option>
+              <option value="reservado">Reservada</option>
+              <option value="false">Vendida (ocultar do site)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <label>Destaques (Enter para adicionar)</label>
+          <input id="destaqueInput" placeholder="Ex.: Revisada, Bateria nova, Garantia 3 meses">
+          <div id="destaques"></div>
+        </div>
+        <div style="margin-top:12px">
+          <label>Descrição / observações</label>
+          <textarea id="descricao" placeholder="Máquina revisada, pneus novos, pronta para operar..."></textarea>
+        </div>
+      </div>
+
+      <div class="grp">
+        <h3>Fotos</h3>
+        <div id="fotoDrop">📷 Clique ou arraste as fotos aqui &nbsp;·&nbsp; a 1ª foto é a capa</div>
+        <input id="fotoInput" type="file" accept="image/*" multiple hidden>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+
+      <div class="acoes">
+        <button class="btn btn-red" id="btnSalvar">＋ Salvar no estoque</button>
+        <button class="btn btn-ghost" id="btnLimpar">Limpar formulário</button>
+      </div>
+      <div class="aviso info" id="editInfo" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- ================= PREVIEW + ESTOQUE ================= -->
+  <section>
+    <div class="painel">
+      <h2>Prévia do anúncio</h2>
+      <p class="sub">É assim que a máquina aparece na página <b>Seminovas</b> do site.</p>
+      <div class="preview-card" id="preview"></div>
+    </div>
+
+    <div class="painel" style="margin-top:26px">
+      <h2>Estoque <span id="cnt" style="color:var(--dourado)"></span></h2>
+      <p class="sub">Máquinas cadastradas neste navegador. Exporte o arquivo e publique para o site atualizar.</p>
+      <div id="listaEstoque"></div>
+      <div class="acoes">
+        <button class="btn btn-gold" id="btnExport">⬇ Exportar seminovas.json</button>
+        <button class="btn btn-ghost" id="btnImport">Importar JSON</button>
+        <input id="importInput" type="file" accept="application/json,.json" hidden>
+      </div>
+      <div class="aviso ok" id="exportInfo" style="display:none"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   ELEVEN — Estoque de Seminovas
+   Gera seminovas.json (consumido pelo index.html #/seminovas)
+   ============================================================ */
+var STORE='eleven_seminovas_estoque_v1';
+var $=function(id){return document.getElementById(id);};
+var fotos=[];          // {url} base64 comprimida
+var destaques=[];      // strings
+var editId=null;       // id em edição
+var estoque=carregar();
+
+/* ---------- util ---------- */
+function slugify(s){return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+function moedaBR(n){var v=parseFloat(String(n).replace(/[^0-9,.-]/g,'').replace('.','').replace(',','.'));
+  if(isNaN(v)||v<=0)return ''; return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function precoNum(n){var v=parseFloat(String(n).replace(/[^0-9,.-]/g,'').replace('.','').replace(',','.'));return isNaN(v)?0:v;}
+function carregar(){try{return JSON.parse(localStorage.getItem(STORE))||[];}catch(e){return [];}}
+function salvarStore(){try{localStorage.setItem(STORE,JSON.stringify(estoque));}catch(e){alert('Estoque grande demais para o navegador. Exporte o JSON.');}}
+
+/* ---------- fotos: redimensiona p/ manter arquivo leve ---------- */
+function addFotoFile(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var max=1100, w=img.width, h=img.height;
+      if(w>h && w>max){h=Math.round(h*max/w);w=max;} else if(h>=w && h>max){w=Math.round(w*max/h);h=max;}
+      var c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      fotos.push({url:c.toDataURL('image/jpeg',0.72)});
+      renderThumbs();renderPreview();
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function renderThumbs(){
+  $('thumbs').innerHTML=fotos.map(function(f,i){
+    return '<div class="thumb'+(i===0?' capa':'')+'"><img src="'+f.url+'"><button data-i="'+i+'" title="Remover">×</button></div>';
+  }).join('');
+  $('thumbs').querySelectorAll('button').forEach(function(b){
+    b.onclick=function(){fotos.splice(+b.dataset.i,1);renderThumbs();renderPreview();};
+  });
+}
+
+/* ---------- destaques ---------- */
+function renderDestaques(){
+  $('destaques').innerHTML=destaques.map(function(d,i){
+    return '<span class="tag-livre">'+d+'<button data-i="'+i+'">×</button></span>';
+  }).join('');
+  $('destaques').querySelectorAll('button').forEach(function(b){
+    b.onclick=function(){destaques.splice(+b.dataset.i,1);renderDestaques();renderPreview();};
+  });
+}
+$('destaqueInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();var v=this.value.trim();if(v){destaques.push(v);this.value='';renderDestaques();renderPreview();}}
+});
+
+/* ---------- monta objeto produto ---------- */
+function coletar(){
+  var marca=$('marca').value.trim(), modelo=$('modelo').value.trim();
+  var titulo=[marca,modelo].filter(Boolean).join(' ')||'Seminova';
+  var torre=[$('torreTipo').value,$('torreAltura').value.trim()].filter(Boolean).join(' ');
+  return {
+    id: editId || (slugify(titulo+'-'+$('ano').value)+'-'+Date.now().toString(36).slice(-4)),
+    titulo:titulo, tipo:$('tipo').value, marca:marca, modelo:modelo, ano:$('ano').value.trim(),
+    motor:$('motor').value, capacidade:$('capacidade').value.trim(), centroCarga:$('centro').value.trim(),
+    torre:torre, horimetro:$('horimetro').value.trim(), cor:$('cor').value.trim(), estado:$('estado').value,
+    preco:moedaBR($('preco').value), precoNum:precoNum($('preco').value),
+    disponivel:$('disp').value, destaques:destaques.slice(), descricao:$('descricao').value.trim(),
+    fotos:fotos.map(function(f){return f.url;})
+  };
+}
+
+/* ---------- preview card ---------- */
+function chip(t){return t?'<span class="chip">'+t+'</span>':'';}
+function renderPreview(){
+  var p=coletar();
+  var capa=p.fotos[0]||'';
+  var badge=p.disponivel==='reservado'?'Reservada':(p.disponivel==='false'?'Vendida':'Disponível');
+  $('preview').innerHTML=
+    '<div class="pc-img" style="'+(capa?'background-image:url(\''+capa+'\')':'')+'">'+
+      (capa?'':'<div style="display:grid;place-items:center;height:100%;color:#444;font-size:12px">sem foto</div>')+
+      '<span class="pc-badge">'+badge+'</span></div>'+
+    '<div class="pc-body">'+
+      '<div class="tipo">'+(p.tipo||'')+'</div>'+
+      '<h4>'+(p.titulo||'Seminova')+(p.ano?' · '+p.ano:'')+'</h4>'+
+      '<div class="chips">'+chip(p.capacidade)+chip(p.motor)+chip(p.torre)+chip(p.horimetro?p.horimetro:'')+chip(p.estado)+'</div>'+
+      (p.destaques.length?'<div class="chips">'+p.destaques.map(function(d){return '<span class="chip" style="border-color:var(--dourado);color:var(--dourado-cl)">✓ '+d+'</span>';}).join('')+'</div>':'')+
+      (p.descricao?'<p style="color:var(--cinza);font-size:12.5px;margin:8px 0 0">'+p.descricao+'</p>':'')+
+      (p.preco?'<div class="pc-preco">'+p.preco+'</div>':'<div class="pc-preco" style="color:var(--cinza);font-size:16px">Sob consulta</div>')+
+    '</div>';
+}
+
+/* ---------- estoque list ---------- */
+function renderEstoque(){
+  $('cnt').textContent=estoque.length?'('+estoque.length+')':'';
+  if(!estoque.length){$('listaEstoque').innerHTML='<p style="color:var(--cinza);font-size:12.5px">Nenhuma máquina cadastrada ainda.</p>';return;}
+  $('listaEstoque').innerHTML=estoque.map(function(p){
+    var capa=(p.fotos&&p.fotos[0])||'';
+    var st=p.disponivel==='reservado'?'· Reservada':(p.disponivel==='false'?'· Vendida':'');
+    return '<div class="estoque-item">'+
+      '<img src="'+capa+'" alt="">'+
+      '<div class="info"><b>'+p.titulo+(p.ano?' · '+p.ano:'')+'</b>'+
+        '<span>'+[p.capacidade,p.motor].filter(Boolean).join(' · ')+'</span>'+
+        '<span>'+(p.preco||'Sob consulta')+' '+st+'</span></div>'+
+      '<div class="mini"><button data-ed="'+p.id+'">Editar</button><button data-rm="'+p.id+'">Excluir</button></div>'+
+    '</div>';
+  }).join('');
+  $('listaEstoque').querySelectorAll('[data-ed]').forEach(function(b){b.onclick=function(){editar(b.dataset.ed);};});
+  $('listaEstoque').querySelectorAll('[data-rm]').forEach(function(b){b.onclick=function(){
+    if(confirm('Excluir esta máquina do estoque?')){estoque=estoque.filter(function(x){return x.id!==b.dataset.rm;});salvarStore();renderEstoque();}
+  };});
+}
+
+/* ---------- salvar / editar / limpar ---------- */
+function limpar(){
+  editId=null;fotos=[];destaques=[];
+  ['marca','modelo','ano','capacidade','centro','torreAltura','horimetro','cor','preco','descricao','destaqueInput'].forEach(function(id){$(id).value='';});
+  $('tipo').selectedIndex=0;$('motor').selectedIndex=0;$('torreTipo').selectedIndex=0;$('estado').value='Bom';$('disp').value='true';
+  renderThumbs();renderDestaques();renderPreview();
+  $('editInfo').style.display='none';$('btnSalvar').textContent='＋ Salvar no estoque';
+}
+function editar(id){
+  var p=estoque.find(function(x){return x.id===id;});if(!p)return;
+  editId=p.id;
+  $('tipo').value=p.tipo||'Empilhadeira Contrabalançada';$('marca').value=p.marca||'';$('modelo').value=p.modelo||'';
+  $('ano').value=p.ano||'';$('motor').value=p.motor||'';$('capacidade').value=p.capacidade||'';$('centro').value=p.centroCarga||'';
+  var tt=(p.torre||'').split(' ');$('torreTipo').value=(['Simplex','Duplex','Triplex','Quádruplo'].indexOf(tt[0])>=0?tt[0]:'');
+  $('torreAltura').value=(p.torre||'').replace($('torreTipo').value,'').trim();
+  $('horimetro').value=p.horimetro||'';$('cor').value=p.cor||'';$('estado').value=p.estado||'Bom';
+  $('preco').value=p.precoNum||'';$('disp').value=p.disponivel||'true';$('descricao').value=p.descricao||'';
+  destaques=(p.destaques||[]).slice();fotos=(p.fotos||[]).map(function(u){return {url:u};});
+  renderThumbs();renderDestaques();renderPreview();
+  $('editInfo').style.display='block';$('editInfo').innerHTML='✎ Editando <b>'+p.titulo+'</b> — salve para atualizar.';
+  $('btnSalvar').textContent='✔ Atualizar máquina';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('btnSalvar').addEventListener('click',function(){
+  var p=coletar();
+  if(!p.marca && !p.modelo){alert('Informe ao menos marca ou modelo.');return;}
+  if(!p.fotos.length && !confirm('Salvar sem foto? A máquina fica sem imagem no site.'))return;
+  var ix=estoque.findIndex(function(x){return x.id===p.id;});
+  if(ix>=0)estoque[ix]=p;else estoque.unshift(p);
+  salvarStore();renderEstoque();limpar();
+  $('exportInfo').style.display='block';$('exportInfo').className='aviso ok';
+  $('exportInfo').innerHTML='✔ Máquina salva. Não esqueça de <b>Exportar seminovas.json</b> e publicar no site.';
+});
+$('btnLimpar').addEventListener('click',limpar);
+
+/* ---------- fotos triggers ---------- */
+$('fotoDrop').addEventListener('click',function(){$('fotoInput').click();});
+$('fotoInput').addEventListener('change',function(){[].slice.call(this.files).forEach(addFotoFile);this.value='';});
+$('fotoDrop').addEventListener('dragover',function(e){e.preventDefault();this.style.borderColor='var(--vermelho)';});
+$('fotoDrop').addEventListener('dragleave',function(){this.style.borderColor='';});
+$('fotoDrop').addEventListener('drop',function(e){e.preventDefault();this.style.borderColor='';
+  [].slice.call(e.dataTransfer.files).filter(function(f){return /^image\//.test(f.type);}).forEach(addFotoFile);});
+
+/* ---------- export / import ---------- */
+$('btnExport').addEventListener('click',function(){
+  if(!estoque.length){alert('Estoque vazio.');return;}
+  var blob=new Blob([JSON.stringify(estoque,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seminovas.json';a.click();
+  URL.revokeObjectURL(a.href);
+  $('exportInfo').style.display='block';$('exportInfo').className='aviso info';
+  $('exportInfo').innerHTML='⬇ <b>seminovas.json</b> baixado. Suba este arquivo na RAIZ do repositório do site (mesma pasta do index.html) e faça o commit. O site atualiza sozinho.';
+});
+$('btnImport').addEventListener('click',function(){$('importInput').click();});
+$('importInput').addEventListener('change',function(){
+  var f=this.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(e){try{var arr=JSON.parse(e.target.result);if(!Array.isArray(arr))throw 0;
+    estoque=arr;salvarStore();renderEstoque();alert('Importado: '+arr.length+' máquina(s).');
+  }catch(x){alert('Arquivo inválido.');}};
+  r.readAsText(f);this.value='';
+});
+
+/* ---------- boot ---------- */
+['marca','modelo','ano','motor','capacidade','centro','torreTipo','torreAltura','horimetro','cor','estado','preco','disp','descricao','tipo']
+  .forEach(function(id){var e=$(id);if(e){e.addEventListener('input',renderPreview);e.addEventListener('change',renderPreview);}});
+renderThumbs();renderDestaques();renderPreview();renderEstoque();
+</script>
+</body>
+</html>
