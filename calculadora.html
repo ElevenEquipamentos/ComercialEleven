@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<script>(function(){var d='claro',t;try{t=localStorage.getItem('elevenTema');}catch(e){}var m=t||d;document.documentElement.classList.add(m==='escuro'?'escuro':'claro');})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Economia — Empilhadeira Elétrica a Lítio | Eleven Equipamentos</title>
+<style>
+  /* ============ PALETA / TEMA ============ */
+  /* Cores fáceis de trocar pela identidade da Eleven */
+  :root{
+    --brand:#111111;        /* preto Eleven */
+    --brand-2:#D60D20;      /* vermelho Eleven */
+    --elec:#B8933A;         /* dourado = solução ELÉTRICA */
+    --elec-soft:#f6efdb;
+    --glp:#D60D20;          /* vermelho = custo (GLP/combustível) */
+    --glp-soft:#fbe7e9;
+    --econ:#1faf54;         /* verde = economia */
+    --econ-soft:#e5f4ec;
+    --danger:#D60D20;
+    --ink:#17181A;
+    --ink-2:#4b5563;
+    --muted:#8a9099;
+    --line:#e6e8ec;
+    --surface:#ffffff;
+    --plane:#f4f6f8;
+    --radius:8px;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --font:'Inter',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    --titulo:'Barlow Condensed','Inter',sans-serif;
+  }
+  html.escuro{--ink:#e8e8e8;--ink-2:#b8b8b8;--muted:#8a8a8a;--line:#2a2a2a;--surface:#151515;--plane:#0c0c0c;--econ-soft:#12291b;--glp-soft:#2a1416;--elec-soft:#2a2413}
+  html.escuro body{background:#0c0c0c}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font);
+    color:var(--ink);
+    background:var(--plane);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px 80px}
+
+  /* ============ HEADER ============ */
+  header.top{
+    background:linear-gradient(135deg,#0b0b0b 0%,#1a1a1a 100%);
+    color:#fff;padding:22px 0 26px;
+  }
+  .top .wrap{padding-bottom:0}
+  .brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo .mark{
+    width:44px;height:44px;border-radius:10px;background:#fff;color:var(--brand);
+    display:grid;place-items:center;font-weight:800;font-size:22px;letter-spacing:-1px;
+  }
+  .logo .name{font-weight:800;font-size:20px;letter-spacing:.5px}
+  .logo .sub{font-size:12px;opacity:.8;font-weight:500;letter-spacing:.3px}
+  .top h1{margin:22px 0 6px;font-size:26px;line-height:1.2;font-weight:800;max-width:760px}
+  .top p.lead{margin:0;font-size:15px;opacity:.9;max-width:720px}
+  .top .contact{font-size:13px;opacity:.85;text-align:right}
+
+  /* ============ CARDS ============ */
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:22px;margin-top:20px;
+  }
+  .card h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:10px}
+  .card .hint{margin:0 0 16px;color:var(--ink-2);font-size:13.5px}
+  .step{
+    display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:700;flex:0 0 auto;
+  }
+
+  /* ============ FORM ============ */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 18px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+  .field .u{font-weight:400;color:var(--muted)}
+  .field input,.field select{
+    font-family:var(--font);font-size:15px;color:var(--ink);
+    padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;width:100%;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(23,105,170,.15)}
+  .field small{color:var(--muted);font-size:11.5px}
+  .seg{display:inline-flex;background:var(--plane);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+  .seg button{
+    border:0;background:transparent;padding:7px 12px;border-radius:7px;cursor:pointer;
+    font-family:var(--font);font-size:13px;font-weight:600;color:var(--ink-2);
+  }
+  .seg button.active{background:var(--brand);color:#fff}
+  details.adv{margin-top:4px}
+  details.adv>summary{
+    cursor:pointer;font-weight:600;color:var(--brand-2);font-size:14px;list-style:none;
+    display:flex;align-items:center;gap:8px;padding:6px 0;
+  }
+  details.adv>summary::-webkit-details-marker{display:none}
+  details.adv>summary::before{content:"⚙";font-size:15px}
+  .subhead{grid-column:1/-1;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:6px 0 -4px}
+
+  /* ============ BOTÃO ============ */
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .btn{
+    border:0;border-radius:10px;padding:13px 22px;font-family:var(--font);font-size:15px;font-weight:700;
+    cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .08s,filter .15s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--econ);color:#fff}
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-ghost{background:#fff;color:var(--brand);border:1px solid var(--line)}
+  .btn-ghost:hover{background:var(--plane)}
+
+  /* ============ RESULTADOS ============ */
+  #results{display:none}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+  .kpi .lab{font-size:12.5px;color:var(--ink-2);font-weight:600;line-height:1.35}
+  .kpi .val{font-size:26px;font-weight:800;margin-top:6px;letter-spacing:-.5px}
+  .kpi .foot{font-size:12px;color:var(--muted);margin-top:3px}
+  .kpi.glp{border-top:4px solid var(--glp)}
+  .kpi.elec{border-top:4px solid var(--elec)}
+  .kpi.econ{border-top:4px solid var(--econ);background:var(--econ-soft)}
+  .kpi.econ .val{color:var(--econ)}
+  .kpi.pay{border-top:4px solid var(--brand-2);background:var(--glp-soft)}
+  .kpi.pay .val{color:var(--brand)}
+
+  .banner{
+    background:linear-gradient(135deg,var(--econ) 0%,#0b6e3d 100%);color:#fff;border-radius:var(--radius);
+    padding:22px 24px;margin-top:20px;box-shadow:var(--shadow);
+  }
+  .banner .big{font-size:32px;font-weight:800;letter-spacing:-.5px;line-height:1.1}
+  .banner .txt{font-size:15px;opacity:.95;margin-top:6px;max-width:760px}
+
+  /* ============ TABELA ============ */
+  .tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+  .tbl th,.tbl td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line)}
+  .tbl th:first-child,.tbl td:first-child{text-align:left}
+  .tbl thead th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:2px solid var(--line)}
+  .tbl tbody tr:hover{background:var(--plane)}
+  .tbl .cat{font-weight:600}
+  .tbl .catdesc{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+  .tbl .num{font-variant-numeric:tabular-nums}
+  .tbl .glpcol{color:var(--glp);font-weight:600}
+  .tbl .eleccol{color:var(--elec);font-weight:600}
+  .tbl tfoot td{font-weight:800;font-size:15px;border-top:2px solid var(--ink);border-bottom:0;padding-top:13px}
+  .tbl .save{color:var(--econ);font-weight:700}
+  .pill{display:inline-block;background:var(--glp-soft);color:var(--glp);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700;margin-left:6px}
+
+  /* ============ CUSTOS OCULTOS ============ */
+  .hidden-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px}
+  .hc{border:1px solid var(--line);border-left:4px solid var(--glp);border-radius:10px;padding:14px 16px;background:#fff}
+  .hc .ic{font-size:20px}
+  .hc .t{font-weight:700;font-size:14px;margin:6px 0 2px}
+  .hc .v{font-size:20px;font-weight:800;color:var(--glp)}
+  .hc .d{font-size:12px;color:var(--ink-2);margin-top:4px}
+
+  /* ============ CHARTS ============ */
+  .chart-wrap{margin-top:8px;position:relative}
+  .chart-title{font-weight:700;font-size:15px;margin:2px 0 2px}
+  .chart-sub{font-size:12.5px;color:var(--ink-2);margin:0 0 12px}
+  svg{max-width:100%;height:auto;display:block}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0 0;font-size:13px}
+  .legend .it{display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+  .legend .sw{width:14px;height:14px;border-radius:4px;flex:0 0 auto}
+  .tip{
+    position:absolute;pointer-events:none;background:#12181f;color:#fff;font-size:12px;
+    padding:8px 10px;border-radius:8px;opacity:0;transform:translate(-50%,-115%);transition:opacity .1s;
+    white-space:nowrap;z-index:5;box-shadow:0 6px 18px rgba(0,0,0,.25)
+  }
+  .tip b{font-weight:700}
+
+  .note{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5}
+  footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12.5px}
+  footer strong{color:var(--ink-2)}
+
+  @media (max-width:640px){
+    .top h1{font-size:22px}
+    .kpi .val{font-size:22px}
+    .banner .big{font-size:26px}
+    .tbl th,.tbl td{padding:9px 7px;font-size:13px}
+  }
+  /* ============ IMPRESSÃO ============ */
+  @media print{
+    body{background:#fff}
+    .noprint{display:none!important}
+    .card,.kpi,.banner{box-shadow:none;break-inside:avoid}
+    header.top{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+ .top h1,.card h2,.kpi .val,.banner .big,.chart-title{font-family:var(--titulo);letter-spacing:.3px}
+ .tema-fx{position:fixed;top:12px;right:12px;z-index:9999;width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(128,128,128,.35);background:rgba(255,255,255,.9);cursor:pointer;font-size:19px;line-height:1;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+ html.escuro .tema-fx{background:rgba(28,28,28,.92);border-color:rgba(255,255,255,.22)}
+ html.escuro .tema-fx .i-lua{display:none}html.escuro .tema-fx .i-sol{display:inline}
+ html.claro .tema-fx .i-sol{display:none}html.claro .tema-fx .i-lua{display:inline}
+ @media print{.tema-fx{display:none!important}}
+
+@media screen{
+ html.escuro .field input,html.escuro .field select{background:#1d1d1d!important;color:#e8e8e8!important;border-color:#343434!important}
+ html.escuro .field input::placeholder{color:#777}
+ html.escuro .hc{background:#151515!important}
+ html.escuro .btn-ghost{background:#151515!important;color:#e8e8e8!important}
+ html.escuro .seg button.active{background:var(--brand-2)!important}
+ html.escuro .tbl tbody tr:hover{background:#111!important}
+}
+</style>
+</head>
+<body>
+<button class="tema-fx" onclick="(function(){var h=document.documentElement,dk=h.classList.contains('escuro');h.classList.remove('escuro','claro');h.classList.add(dk?'claro':'escuro');try{localStorage.setItem('elevenTema',dk?'claro':'escuro');}catch(e){}})()" title="Modo claro / escuro" aria-label="Alternar tema"><span class="i-sol">&#9728;</span><span class="i-lua">&#127769;</span></button>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="logo">
+        <img src="data:image/png;base64,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" alt="Eleven Equipamentos" style="height:54px;width:auto;display:block">
+        <div class="sub" style="border-left:2px solid var(--brand-2);padding-left:12px">Empilhadeiras &amp; Movimentação<br>Elétricas a Lítio</div>
+      </div>
+      <div class="contact noprint">
+        Simule agora · sem compromisso<br>
+        <strong>Descubra quanto sua operação perde com GLP</strong>
+      </div>
+    </div>
+    <h1>Quanto você economiza trocando o GLP pela empilhadeira elétrica a lítio?</h1>
+    <p class="lead">Preencha os dados da sua operação atual. Em segundos você vê o custo real do gás — inclusive os custos que ninguém mostra — e em quanto tempo a elétrica se paga.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ ENTRADA DE DADOS ============ -->
+  <section class="card">
+    <h2><span class="step">1</span> Sua operação hoje</h2>
+    <p class="hint">Dados da máquina que você usa atualmente. Só o consumo e as horas são obrigatórios — o resto ajuda a montar a proposta.</p>
+    <div class="grid">
+      <div class="field">
+        <label>Marca / máquina <span class="u">(opcional)</span></label>
+        <input id="marca" type="text" placeholder="Ex.: Toyota, Hyster, Yale...">
+      </div>
+      <div class="field">
+        <label>Modelo <span class="u">(opcional)</span></label>
+        <input id="modelo" type="text" placeholder="Ex.: 8FGCU25">
+      </div>
+      <div class="field">
+        <label>Capacidade de carga</label>
+        <select id="classe">
+          <option value="2.2">Até 1.500 kg</option>
+          <option value="3.0" selected>2.000 a 2.500 kg</option>
+          <option value="4.0">3.000 a 3.500 kg</option>
+          <option value="5.5">4.000 kg ou mais</option>
+        </select>
+        <small>Usado para estimar o consumo da elétrica.</small>
+      </div>
+      <div class="field">
+        <label>Combustível atual</label>
+        <select id="fuel">
+          <option value="glp" selected>GLP (gás)</option>
+          <option value="diesel">Diesel</option>
+          <option value="gasolina">Gasolina</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Turnos de trabalho</label>
+        <select id="turnos">
+          <option value="1">1 turno</option>
+          <option value="2" selected>2 turnos</option>
+          <option value="3">3 turnos</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Horas de operação por dia</label>
+        <input id="horasDia" type="number" min="0.5" step="0.5" value="8">
+      </div>
+      <div class="field">
+        <label>Dias de operação por mês</label>
+        <input id="diasMes" type="number" min="1" step="1" value="22">
+      </div>
+
+      <div class="subhead">Consumo de combustível</div>
+
+      <div class="field" style="grid-column:1/-1">
+        <label>Como você prefere informar o consumo?</label>
+        <div class="seg" id="segConsumo">
+          <button type="button" data-m="cil" class="active">Cilindros por semana</button>
+          <button type="button" data-m="mes">Kg de GLP por mês</button>
+        </div>
+      </div>
+
+      <div class="field" id="f_cilQtd">
+        <label>Cilindros por semana</label>
+        <input id="cilSemana" type="number" min="0" step="0.5" value="5">
+      </div>
+      <div class="field" id="f_cilTam">
+        <label>Tamanho do cilindro <span class="u">(kg)</span></label>
+        <select id="cilTam">
+          <option value="13">13 kg (P13)</option>
+          <option value="20" selected>20 kg (P20)</option>
+          <option value="45">45 kg (P45)</option>
+        </select>
+      </div>
+      <div class="field" id="f_kgMes" style="display:none">
+        <label id="lblKgMes">Kg de GLP por mês</label>
+        <input id="kgMes" type="number" min="0" step="1" value="440">
+      </div>
+    </div>
+
+    <!-- ===== PREMISSAS ===== -->
+    <details class="adv" open>
+      <summary>Premissas de custo — ajuste com os números da região/operação</summary>
+      <div class="grid" style="margin-top:12px">
+        <div class="field">
+          <label id="lblPrecoFuel">Preço do GLP <span class="u">(R$/kg)</span></label>
+          <input id="precoFuel" type="number" min="0" step="0.01" value="8.50">
+        </div>
+        <div class="field">
+          <label>Preço da energia elétrica <span class="u">(R$/kWh)</span></label>
+          <input id="precoKwh" type="number" min="0" step="0.01" value="0.95">
+        </div>
+        <div class="field">
+          <label>Consumo da elétrica <span class="u">(kWh/h)</span></label>
+          <input id="kwhH" type="number" min="0" step="0.1" value="3.0">
+          <small>Estimado pela capacidade (lítio EP ~2,5–3 kWh/h na faixa 2,5 t, base CTS Silva). Ajuste se souber o valor real da conta de luz.</small>
+        </div>
+        <div class="field">
+          <label>Manutenção do combustível <span class="u">(R$/h)</span></label>
+          <input id="manutFuel" type="number" min="0" step="0.5" value="7">
+          <small>Óleo, filtros, velas, motor, correias.</small>
+        </div>
+        <div class="field">
+          <label>Manutenção da elétrica <span class="u">(R$/h)</span></label>
+          <input id="manutElec" type="number" min="0" step="0.5" value="1.5">
+          <small>Lítio praticamente não tem manutenção.</small>
+        </div>
+        <div class="field">
+          <label>Custo do operador <span class="u">(R$/h)</span></label>
+          <input id="custoOp" type="number" min="0" step="1" value="25">
+          <small>Salário + encargos, por hora.</small>
+        </div>
+        <div class="field" id="f_perda">
+          <label>Gás perdido / vazamento <span class="u">(%)</span></label>
+          <input id="perda" type="number" min="0" max="30" step="1" value="6">
+          <small>Vazamentos, cilindros parciais, evaporação.</small>
+        </div>
+        <div class="field" id="f_troca">
+          <label>Tempo por troca de cilindro <span class="u">(min)</span></label>
+          <input id="tempoTroca" type="number" min="0" step="1" value="10">
+          <small>Máquina e operador parados.</small>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ INVESTIMENTO ============ -->
+  <section class="card">
+    <h2><span class="step">2</span> A elétrica Eleven &amp; o payback</h2>
+    <p class="hint">Informe o valor da máquina elétrica para calcular em quanto tempo ela se paga só com a economia.</p>
+    <div class="grid">
+      <div class="field">
+        <label>Preço da empilhadeira elétrica Eleven <span class="u">(R$)</span></label>
+        <input id="precoElec" type="number" min="0" step="500" value="145000">
+      </div>
+      <div class="field">
+        <label>Entrada / valor da sua máquina usada <span class="u">(R$)</span></label>
+        <input id="entrada" type="number" min="0" step="500" value="0">
+        <small>Abatido do investimento. Deixe 0 se não houver.</small>
+      </div>
+      <div class="field">
+        <label>Ou: locação mensal da elétrica <span class="u">(R$/mês, opcional)</span></label>
+        <input id="locacao" type="number" min="0" step="100" value="0">
+        <small>Se preencher, mostramos a economia locando (sem investir).</small>
+      </div>
+      <div class="field">
+        <label>Horizonte de análise <span class="u">(meses)</span></label>
+        <input id="horizonte" type="number" min="12" max="120" step="12" value="60">
+      </div>
+    </div>
+    <div class="actions noprint">
+      <button class="btn btn-primary" id="calcBtn">Calcular minha economia →</button>
+      <button class="btn btn-ghost" id="printBtn" style="display:none">🖨 Imprimir / salvar proposta</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULTADOS ============ -->
+  <section id="results">
+
+    <div class="banner">
+      <div class="big" id="bnBig">—</div>
+      <div class="txt" id="bnTxt">—</div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Resumo da sua operação</h2>
+      <p class="hint" id="opResumo">—</p>
+      <div class="kpis">
+        <div class="kpi glp">
+          <div class="lab">🔥 Custo mensal HOJE (<span id="k_fuelname">GLP</span>)</div>
+          <div class="val" id="k_glpMes">—</div>
+          <div class="foot" id="k_glpAno">—</div>
+        </div>
+        <div class="kpi elec">
+          <div class="lab">⚡ Custo mensal ELÉTRICA</div>
+          <div class="val" id="k_elecMes">—</div>
+          <div class="foot" id="k_elecAno">—</div>
+        </div>
+        <div class="kpi econ">
+          <div class="lab">💰 Economia mensal</div>
+          <div class="val" id="k_econMes">—</div>
+          <div class="foot" id="k_econPct">—</div>
+        </div>
+        <div class="kpi pay">
+          <div class="lab">⏱ Payback (retorno)</div>
+          <div class="val" id="k_payback">—</div>
+          <div class="foot" id="k_paybackFoot">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparativo detalhado -->
+    <div class="card">
+      <h2>🧾 Comparativo de custos — mês a mês</h2>
+      <p class="hint">Todos os custos de operar cada máquina. Valores mensais com base na sua operação.</p>
+      <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Item de custo</th>
+            <th class="glpcol" id="th_fuel">GLP</th>
+            <th class="eleccol">Elétrica</th>
+            <th>Você economiza</th>
+          </tr>
+        </thead>
+        <tbody id="tblBody"></tbody>
+        <tfoot>
+          <tr>
+            <td>Total por mês</td>
+            <td class="num glpcol" id="t_glp">—</td>
+            <td class="num eleccol" id="t_elec">—</td>
+            <td class="num save" id="t_save">—</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700">Total por ano</td>
+            <td class="num glpcol" id="ta_glp">—</td>
+            <td class="num eleccol" id="ta_elec">—</td>
+            <td class="num save" id="ta_save">—</td>
+          </tr>
+        </tfoot>
+      </table>
+      </div>
+    </div>
+
+    <!-- Custos ocultos -->
+    <div class="card">
+      <h2>🕵️ Os custos ocultos do gás</h2>
+      <p class="hint">O preço do cilindro é só a ponta do iceberg. Isto é o que a maioria das empresas paga sem perceber:</p>
+      <div class="hidden-grid" id="hiddenGrid"></div>
+    </div>
+
+    <!-- Gráfico payback -->
+    <div class="card">
+      <div class="chart-title">Custo acumulado ao longo do tempo</div>
+      <p class="chart-sub">Onde as linhas se cruzam, a elétrica já se pagou. A partir daí, tudo é economia no seu bolso.</p>
+      <div class="chart-wrap" id="lineWrap"></div>
+      <div class="legend">
+        <div class="it"><span class="sw" style="background:var(--glp)"></span> Continuar com <span id="lg_fuel">GLP</span> (acumulado)</div>
+        <div class="it"><span class="sw" style="background:var(--elec)"></span> Comprar a elétrica (investimento + operação)</div>
+      </div>
+    </div>
+
+    <!-- Gráfico barras -->
+    <div class="card">
+      <div class="chart-title">Custo mensal por categoria</div>
+      <p class="chart-sub">Onde está a diferença, item por item.</p>
+      <div class="chart-wrap" id="barWrap"></div>
+      <div class="legend">
+        <div class="it"><span class="sw" style="background:var(--glp)"></span> <span id="lg_fuel2">GLP</span></div>
+        <div class="it"><span class="sw" style="background:var(--elec)"></span> Elétrica</div>
+      </div>
+    </div>
+
+    <div class="card noprint" style="text-align:center;background:var(--brand);color:#fff;border:0">
+      <h2 style="justify-content:center;color:#fff">Pronto para parar de queimar dinheiro?</h2>
+      <p style="opacity:.9;margin:6px 0 16px">Fale com a Eleven e receba uma proposta com o modelo elétrico certo para a sua operação.</p>
+      <button class="btn btn-primary" id="printBtn2">🖨 Salvar esta simulação em PDF</button>
+    </div>
+
+    <p class="note" id="disclaimer"></p>
+  </section>
+
+  <footer>
+    <strong>Eleven Equipamentos</strong> — Empilhadeiras e movimentação · Pinhais/Curitiba – PR<br>
+    Simulação estimativa para fins comerciais. Os valores finais dependem da operação, da tarifa de energia e do modelo escolhido.
+  </footer>
+</div>
+
+<script>
+/* =================== UTIL =================== */
+const $ = id => document.getElementById(id);
+const _brl = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const _brl2 = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:2,maximumFractionDigits:2});
+const _num = new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1});
+const BRL = v => _brl.format(v);
+const BRL2 = v => _brl2.format(v);
+const NUM = {format: v => _num.format(v)};
+const num = id => parseFloat(($(id).value+'').replace(',','.'))||0;
+
+const FUELS = {
+  glp:      {label:'GLP', unit:'kg', price:8.50, cylinders:true},
+  diesel:   {label:'Diesel', unit:'L', price:6.00, cylinders:false},
+  gasolina: {label:'Gasolina', unit:'L', price:6.20, cylinders:false}
+};
+
+let consumoMode = 'cil'; // 'cil' | 'mes'
+
+/* =================== UI DINÂMICA =================== */
+$('classe').addEventListener('change',e=>{ $('kwhH').value = e.target.value; });
+
+$('fuel').addEventListener('change',e=>{
+  const f = FUELS[e.target.value];
+  $('precoFuel').value = f.price.toFixed(2);
+  $('lblPrecoFuel').innerHTML = 'Preço do '+f.label+' <span class="u">(R$/'+f.unit+')</span>';
+  const isGlp = e.target.value==='glp';
+  // troca/perda só fazem sentido no GLP (cilindros)
+  $('f_perda').style.display = isGlp ? '' : 'none';
+  $('f_troca').style.display = isGlp ? '' : 'none';
+  // modo de consumo
+  $('segConsumo').parentElement.style.display = '';
+  document.querySelectorAll('#segConsumo button').forEach(b=>{
+    b.textContent = b.dataset.m==='cil'
+      ? (isGlp?'Cilindros por semana':'Consumo por dia')
+      : (isGlp?'Kg de '+f.label+' por mês':f.unit+' por mês');
+  });
+  if(!isGlp && consumoMode==='cil'){ /* mantém, reinterpretado como por dia */ }
+  refreshConsumoFields();
+});
+
+document.querySelectorAll('#segConsumo button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#segConsumo button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    consumoMode = btn.dataset.m;
+    refreshConsumoFields();
+  });
+});
+
+function refreshConsumoFields(){
+  const fuelKey = $('fuel').value;
+  const isGlp = fuelKey==='glp';
+  const f = FUELS[fuelKey];
+  const showCil = consumoMode==='cil';
+  $('f_cilQtd').style.display = showCil ? '' : 'none';
+  $('f_cilTam').style.display = (showCil && isGlp) ? '' : 'none';
+  $('f_kgMes').style.display = showCil ? 'none' : '';
+  // labels
+  if(showCil){
+    $('f_cilQtd').querySelector('label').textContent = isGlp ? 'Cilindros por semana' : (f.unit+' por dia');
+  }
+  $('lblKgMes').innerHTML = isGlp
+    ? 'Kg de '+f.label+' por mês'
+    : f.unit+' de '+f.label+' por mês';
+}
+
+/* =================== CÁLCULO =================== */
+function calcular(){
+  const fuelKey = $('fuel').value;
+  const f = FUELS[fuelKey];
+  const isGlp = fuelKey==='glp';
+
+  const horasDia = num('horasDia');
+  const diasMes  = num('diasMes');
+  const horasMes = horasDia*diasMes;
+  const horasAno = horasMes*12;
+
+  // ---- consumo mensal de combustível (kg ou L) ----
+  let consumoMes;
+  const cilTam = num('cilTam');
+  if(consumoMode==='cil'){
+    if(isGlp){
+      // cilindros por semana -> kg/mês
+      consumoMes = num('cilSemana')*cilTam*(52/12);
+    }else{
+      // interpretado como unidades por dia (L/dia)
+      consumoMes = num('cilSemana')*diasMes;
+    }
+  }else{
+    consumoMes = num('kgMes'); // já é por mês
+  }
+  const consumoAno = consumoMes*12;
+  const consumoHora = horasMes>0 ? consumoMes/horasMes : 0;
+
+  // ---- premissas ----
+  const precoFuel = num('precoFuel');
+  const precoKwh  = num('precoKwh');
+  const kwhH      = num('kwhH');
+  const manutFuel = num('manutFuel');
+  const manutElec = num('manutElec');
+  const custoOp   = num('custoOp');
+  const perdaPct  = isGlp ? num('perda')/100 : 0;
+  const tempoTroca= isGlp ? num('tempoTroca') : 0;
+
+  // ---- CUSTOS GLP / COMBUSTÍVEL (mensal) ----
+  const cFuel = consumoMes*precoFuel;                 // combustível
+  const cManutG = manutFuel*horasMes;                 // manutenção
+  // trocas de cilindro / mês (só GLP com cilindros)
+  const trocasMes = (isGlp && cilTam>0) ? consumoMes/cilTam : 0;
+  const cTroca = trocasMes*(tempoTroca/60)*custoOp;   // parada operacional
+  const totalGLP = cFuel + cManutG + cTroca;
+
+  // parcela desperdiçada (subconjunto do combustível, informativo)
+  const gasPerdido = cFuel*perdaPct;
+
+  // ---- CUSTOS ELÉTRICA (mensal) ----
+  const kwhMes = kwhH*horasMes;
+  const cEnergia = kwhMes*precoKwh;
+  const cManutE = manutElec*horasMes;
+  const totalELEC = cEnergia + cManutE;
+
+  // ---- economia ----
+  const econMes = totalGLP - totalELEC;
+  const econAno = econMes*12;
+  const econPct = totalGLP>0 ? econMes/totalGLP*100 : 0;
+
+  // ---- investimento / payback ----
+  const precoElec = num('precoElec');
+  const entrada   = num('entrada');
+  const investLiq = Math.max(0, precoElec - entrada);
+  const paybackMeses = econMes>0 ? investLiq/econMes : Infinity;
+  const horizonte = Math.round(num('horizonte'))||60;
+
+  // economia líquida no horizonte
+  const econHorizonte = econMes*horizonte - investLiq;
+
+  // locação (opcional)
+  const locacao = num('locacao');
+  const totalElecLocado = locacao>0 ? (locacao + cEnergia) : null; // manutenção inclusa na locação
+  const econLocacao = totalElecLocado!=null ? (totalGLP - totalElecLocado) : null;
+
+  return {
+    f,isGlp,horasDia,diasMes,horasMes,horasAno,
+    consumoMes,consumoAno,consumoHora,cilTam,
+    cFuel,cManutG,cTroca,trocasMes,totalGLP,gasPerdido,perdaPct,tempoTroca,
+    kwhMes,cEnergia,cManutE,totalELEC,
+    econMes,econAno,econPct,
+    precoElec,entrada,investLiq,paybackMeses,horizonte,econHorizonte,
+    locacao,totalElecLocado,econLocacao,custoOp
+  };
+}
+
+/* =================== RENDER =================== */
+function paybackTexto(m){
+  if(!isFinite(m)) return 'Sem retorno';
+  if(m<1) return 'menos de 1 mês';
+  const anos = Math.floor(m/12), meses = Math.round(m%12);
+  if(anos===0) return Math.round(m)+' meses';
+  return anos+' ano'+(anos>1?'s':'')+(meses>0?' e '+meses+' m'+(meses>1?'eses':'ês'):'');
+}
+
+function render(r){
+  const fn = r.f.label;
+  const unit = r.f.unit;
+
+  // Banner
+  if(r.econMes>0){
+    $('bnBig').textContent = 'Você está gastando '+BRL(r.econAno)+' a mais por ano com '+fn+'.';
+    $('bnTxt').textContent = isFinite(r.paybackMeses)
+      ? 'Trocando pela elétrica a lítio da Eleven, o investimento se paga em '+paybackTexto(r.paybackMeses)+' — e em '+Math.round(r.horizonte/12)+' anos a economia líquida chega a '+BRL(r.econHorizonte)+'.'
+      : 'A elétrica reduz drasticamente seus custos de operação.';
+  }else{
+    $('bnBig').textContent = 'Nesta configuração o '+fn+' ficou mais barato.';
+    $('bnTxt').textContent = 'Reveja as premissas (preço do gás, energia, manutenção e horas) — em operações intensas a elétrica costuma virar o jogo.';
+  }
+
+  // Resumo operação
+  $('k_fuelname').textContent = fn;
+  $('lg_fuel').textContent = fn; $('lg_fuel2').textContent = fn; $('th_fuel').textContent = fn;
+  $('opResumo').innerHTML =
+    '<strong>'+NUM.format(r.horasMes)+' h/mês</strong> de operação · consumo de <strong>'+NUM.format(r.consumoMes)+' '+unit+'/mês</strong> ('+NUM.format(r.consumoHora)+' '+unit+'/h) · elétrica estimada em <strong>'+NUM.format(r.kwhMes)+' kWh/mês</strong>.';
+
+  // KPIs
+  $('k_glpMes').textContent = BRL(r.totalGLP);
+  $('k_glpAno').textContent = BRL(r.totalGLP*12)+' por ano';
+  $('k_elecMes').textContent = BRL(r.totalELEC);
+  $('k_elecAno').textContent = BRL(r.totalELEC*12)+' por ano';
+  $('k_econMes').textContent = BRL(r.econMes);
+  $('k_econPct').textContent = r.econPct>0 ? NUM.format(r.econPct)+'% mais barato' : '—';
+  $('k_payback').textContent = paybackTexto(r.paybackMeses);
+  $('k_paybackFoot').textContent = isFinite(r.paybackMeses) ? 'Investimento: '+BRL(r.investLiq) : '—';
+
+  // Tabela
+  const rows = [
+    ['Combustível / Energia', r.isGlp?'Gás vs. eletricidade':'Combustível vs. eletricidade', r.cFuel, r.cEnergia],
+    ['Manutenção','Óleo, filtros, velas, motor × quase zero na elétrica', r.cManutG, r.cManutE],
+  ];
+  if(r.isGlp){
+    rows.push(['Paradas p/ troca de cilindro','Máquina e operador parados', r.cTroca, 0]);
+  }
+  let html='';
+  rows.forEach(([cat,desc,g,e])=>{
+    const save=g-e;
+    html+='<tr><td class="cat">'+cat+'<span class="catdesc">'+desc+'</span></td>'+
+      '<td class="num glpcol">'+BRL(g)+'</td>'+
+      '<td class="num eleccol">'+BRL(e)+'</td>'+
+      '<td class="num save">'+(save>0?BRL(save):'—')+'</td></tr>';
+  });
+  $('tblBody').innerHTML = html;
+  $('t_glp').textContent=BRL(r.totalGLP); $('t_elec').textContent=BRL(r.totalELEC); $('t_save').textContent=BRL(r.econMes);
+  $('ta_glp').textContent=BRL(r.totalGLP*12); $('ta_elec').textContent=BRL(r.totalELEC*12); $('ta_save').textContent=BRL(r.econAno);
+
+  // Custos ocultos
+  const hc=[];
+  if(r.isGlp){
+    hc.push(['💨','Gás que vaza / desperdiça', r.gasPerdido*12, NUM.format(r.perdaPct*100)+'% do gás vira prejuízo: vazamentos, cilindros parciais e evaporação. Por ano.']);
+    const horasParada = r.trocasMes*(r.tempoTroca/60)*12;
+    hc.push(['⏸','Paradas para trocar cilindro', r.cTroca*12, '≈ '+NUM.format(r.trocasMes)+' trocas/mês · '+NUM.format(horasParada)+' h/ano de máquina + operador parados. A elétrica só recarrega.']);
+  }else{
+    hc.push(['💨','Perdas de combustível', r.cFuel*0.03*12, 'Evaporação e reabastecimento. A elétrica não tem esse desperdício.']);
+  }
+  hc.push(['🔧','Manutenção do motor', r.cManutG*12, 'Motor a combustão exige óleo, filtros, velas e revisões constantes. O lítio praticamente elimina isso.']);
+  hc.push(['🌫️','Ambiente & saúde', 0, 'Sem gases de escape, sem ruído e sem calor do motor — melhor para o operador e para áreas fechadas/refrigeradas.']);
+  hc.push(['📉','Máquina mais lenta e mais falha', 0, 'Combustão perde potência com o cilindro acabando e quebra mais. A elétrica entrega torque constante o dia todo.']);
+  let hch='';
+  hc.forEach(([ic,t,v,d])=>{
+    hch+='<div class="hc"><div class="ic">'+ic+'</div><div class="t">'+t+'</div>'+
+      (v>0?'<div class="v">'+BRL(v)+'<span style="font-size:12px;font-weight:600;color:var(--muted)">/ano</span></div>':'')+
+      '<div class="d">'+d+'</div></div>';
+  });
+  $('hiddenGrid').innerHTML=hch;
+
+  // Charts
+  drawLine(r);
+  drawBars(r);
+
+  // Disclaimer
+  let disc = 'Estimativa gerada em '+new Date().toLocaleDateString('pt-BR')+'. Premissas usadas: '+fn+' a '+BRL2(num('precoFuel'))+'/'+unit+', energia a '+BRL2(num('precoKwh'))+'/kWh, elétrica a '+NUM.format(num('kwhH'))+' kWh/h, manutenção '+fn+' '+BRL2(num('manutFuel'))+'/h e elétrica '+BRL2(num('manutElec'))+'/h.';
+  if(r.econLocacao!=null && r.econLocacao>0){
+    disc += ' Locação: mesmo sem investir, locando a elétrica por '+BRL(r.locacao)+'/mês você economizaria cerca de '+BRL(r.econLocacao)+'/mês frente ao '+fn+'.';
+  }
+  $('disclaimer').textContent = disc;
+
+  $('results').style.display='block';
+  $('printBtn').style.display='inline-flex';
+}
+
+/* =================== GRÁFICO LINHA (payback) =================== */
+function drawLine(r){
+  const W=760,H=340,P={l:64,r:20,t:16,b:40};
+  const H0=r.horizonte;
+  const months=[]; for(let m=0;m<=H0;m++) months.push(m);
+  const glp = m=>r.totalGLP*m;
+  const elec= m=>r.investLiq + r.totalELEC*m;
+  const maxV=Math.max(glp(H0),elec(H0),1);
+  const x=m=>P.l+(W-P.l-P.r)*(m/H0);
+  const y=v=>H-P.b-(H-P.t-P.b)*(v/maxV);
+
+  const path=fn=>months.map((m,i)=>(i?'L':'M')+x(m).toFixed(1)+' '+y(fn(m)).toFixed(1)).join(' ');
+
+  // grid + eixo Y
+  let grid='',ticks=5;
+  for(let i=0;i<=ticks;i++){
+    const v=maxV*i/ticks, yy=y(v);
+    grid+='<line x1="'+P.l+'" y1="'+yy+'" x2="'+(W-P.r)+'" y2="'+yy+'" stroke="var(--line)" stroke-width="1"/>';
+    grid+='<text x="'+(P.l-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+BRL(v)+'</text>';
+  }
+  // eixo X (a cada 12 meses)
+  let xlab='';
+  for(let m=0;m<=H0;m+=12){
+    xlab+='<text x="'+x(m)+'" y="'+(H-P.b+20)+'" text-anchor="middle" font-size="11" fill="var(--muted)">'+m+'m</text>';
+    xlab+='<line x1="'+x(m)+'" y1="'+(H-P.b)+'" x2="'+x(m)+'" y2="'+(H-P.b+5)+'" stroke="var(--line)"/>';
+  }
+
+  // ponto de payback
+  let pay='';
+  if(isFinite(r.paybackMeses) && r.paybackMeses<=H0){
+    const pm=r.paybackMeses, px=x(pm), py=y(glp(pm));
+    pay='<line x1="'+px+'" y1="'+P.t+'" x2="'+px+'" y2="'+(H-P.b)+'" stroke="var(--econ)" stroke-width="1.5" stroke-dasharray="5 4"/>'+
+        '<circle cx="'+px+'" cy="'+py+'" r="6" fill="var(--econ)" stroke="#fff" stroke-width="2"/>'+
+        '<rect x="'+(Math.min(px+8,W-160))+'" y="'+(P.t+4)+'" width="150" height="38" rx="7" fill="var(--econ)"/>'+
+        '<text x="'+(Math.min(px+8,W-160)+10)+'" y="'+(P.t+20)+'" font-size="11" fill="#fff" font-weight="700">Payback: '+paybackTexto(pm)+'</text>'+
+        '<text x="'+(Math.min(px+8,W-160)+10)+'" y="'+(P.t+34)+'" font-size="10" fill="#fff" opacity="0.9">a elétrica se pagou</text>';
+  }
+
+  const svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Custo acumulado ao longo do tempo">'+
+    grid+xlab+
+    '<path d="'+path(glp)+'" fill="none" stroke="var(--glp)" stroke-width="2.5"/>'+
+    '<path d="'+path(elec)+'" fill="none" stroke="var(--elec)" stroke-width="2.5"/>'+
+    pay+
+    '<rect id="lineHit" x="'+P.l+'" y="'+P.t+'" width="'+(W-P.l-P.r)+'" height="'+(H-P.t-P.b)+'" fill="transparent"/>'+
+    '<line id="cross" x1="0" y1="'+P.t+'" x2="0" y2="'+(H-P.b)+'" stroke="var(--muted)" stroke-width="1" opacity="0"/>'+
+    '<circle id="dotG" r="4.5" fill="var(--glp)" stroke="#fff" stroke-width="1.5" opacity="0"/>'+
+    '<circle id="dotE" r="4.5" fill="var(--elec)" stroke="#fff" stroke-width="1.5" opacity="0"/>'+
+    '</svg>';
+  const wrap=$('lineWrap');
+  wrap.innerHTML=svg+'<div class="tip" id="lineTip"></div>';
+
+  const svgEl=wrap.querySelector('svg');
+  const tip=$('lineTip'), cross=$('cross'), dotG=$('dotG'), dotE=$('dotE'), hit=$('lineHit');
+  function onMove(evt){
+    const pt=svgEl.getBoundingClientRect();
+    const sx=(evt.clientX-pt.left)/pt.width*W;
+    let m=Math.round(((sx-P.l)/(W-P.l-P.r))*H0);
+    m=Math.max(0,Math.min(H0,m));
+    const gx=x(m);
+    cross.setAttribute('x1',gx);cross.setAttribute('x2',gx);cross.setAttribute('opacity','0.5');
+    dotG.setAttribute('cx',gx);dotG.setAttribute('cy',y(glp(m)));dotG.setAttribute('opacity','1');
+    dotE.setAttribute('cx',gx);dotE.setAttribute('cy',y(elec(m)));dotE.setAttribute('opacity','1');
+    tip.style.opacity='1';
+    tip.style.left=(gx/W*pt.width)+'px';
+    tip.style.top=(y(Math.max(glp(m),elec(m)))/H*pt.height)+'px';
+    const diff=glp(m)-elec(m);
+    tip.innerHTML='<b>Mês '+m+'</b><br>'+r.f.label+': '+BRL(glp(m))+'<br>Elétrica: '+BRL(elec(m))+
+      '<br><b style="color:'+(diff>=0?'#6ee7a8':'#ffb4a2')+'">'+(diff>=0?'Economia: ':'Diferença: ')+BRL(Math.abs(diff))+'</b>';
+  }
+  function onLeave(){tip.style.opacity='0';cross.setAttribute('opacity','0');dotG.setAttribute('opacity','0');dotE.setAttribute('opacity','0');}
+  hit.addEventListener('mousemove',onMove);
+  hit.addEventListener('mouseleave',onLeave);
+  hit.addEventListener('touchmove',e=>{if(e.touches[0]){onMove(e.touches[0]);e.preventDefault();}},{passive:false});
+}
+
+/* =================== GRÁFICO BARRAS =================== */
+function drawBars(r){
+  const cats=[
+    ['Combustível/Energia', r.cFuel, r.cEnergia],
+    ['Manutenção', r.cManutG, r.cManutE],
+  ];
+  if(r.isGlp) cats.push(['Troca cilindro', r.cTroca, 0]);
+  cats.push(['TOTAL', r.totalGLP, r.totalELEC]);
+
+  const W=760,H=320,P={l:64,r:16,t:16,b:56};
+  const maxV=Math.max(...cats.flatMap(c=>[c[1],c[2]]),1);
+  const y=v=>H-P.b-(H-P.t-P.b)*(v/maxV);
+  const groupW=(W-P.l-P.r)/cats.length;
+  const bw=Math.min(46,groupW/2-8);
+
+  let grid='';
+  for(let i=0;i<=4;i++){const v=maxV*i/4,yy=y(v);
+    grid+='<line x1="'+P.l+'" y1="'+yy+'" x2="'+(W-P.r)+'" y2="'+yy+'" stroke="var(--line)"/>';
+    grid+='<text x="'+(P.l-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+BRL(v)+'</text>';
+  }
+  let bars='',labs='';
+  cats.forEach((c,i)=>{
+    const cx=P.l+groupW*i+groupW/2;
+    const x1=cx-bw-3, x2=cx+3;
+    const h1=(H-P.b)-y(c[1]), h2=(H-P.b)-y(c[2]);
+    bars+='<rect class="bar" x="'+x1+'" y="'+y(c[1])+'" width="'+bw+'" height="'+Math.max(0,h1)+'" rx="4" fill="var(--glp)" data-l="'+c[0]+'" data-g="'+c[1]+'" data-e="'+c[2]+'"/>';
+    bars+='<rect class="bar" x="'+x2+'" y="'+y(c[2])+'" width="'+bw+'" height="'+Math.max(0,h2)+'" rx="4" fill="var(--elec)" data-l="'+c[0]+'" data-g="'+c[1]+'" data-e="'+c[2]+'"/>';
+    labs+='<text x="'+cx+'" y="'+(H-P.b+18)+'" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-weight="600">'+c[0]+'</text>';
+  });
+
+  const wrap=$('barWrap');
+  wrap.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Custo mensal por categoria">'+grid+bars+labs+'</svg>'+
+    '<div class="tip" id="barTip"></div>';
+  const tip=$('barTip'), svgEl=wrap.querySelector('svg');
+  wrap.querySelectorAll('.bar').forEach(b=>{
+    b.style.cursor='pointer';
+    b.addEventListener('mousemove',e=>{
+      const pt=svgEl.getBoundingClientRect();
+      tip.style.opacity='1';
+      tip.style.left=(e.clientX-pt.left)+'px';
+      tip.style.top=(e.clientY-pt.top-8)+'px';
+      tip.innerHTML='<b>'+b.dataset.l+'</b><br>'+r.f.label+': '+BRL(+b.dataset.g)+'<br>Elétrica: '+BRL(+b.dataset.e)+'/mês';
+    });
+    b.addEventListener('mouseleave',()=>tip.style.opacity='0');
+  });
+}
+
+/* =================== EVENTOS =================== */
+$('calcBtn').addEventListener('click',()=>{
+  const r=calcular();
+  render(r);
+  $('results').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('printBtn').addEventListener('click',()=>window.print());
+$('printBtn2').addEventListener('click',()=>window.print());
+
+// estado inicial dos campos
+refreshConsumoFields();
+</script>
+</body>
+</html>
