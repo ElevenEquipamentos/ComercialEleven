@@ -245,7 +245,44 @@
    .gate-box h2{font-size:25px}
  }
  @media print{.gate{display:none!important}}
+
+ /* mensagem de erro por campo */
+ .gate-field .msg{display:block;font-size:12px;font-weight:600;color:var(--brand-2);margin-top:5px;line-height:1.35}
+ .gate-field .msg[hidden]{display:none}
+
+ /* ============ CONFIRMAÇÃO DO ESTUDO ============ */
+ #confirma[hidden]{display:none!important}
+ #confirma{margin-top:26px}
+ .cf-card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--econ);
+   border-radius:12px;padding:34px 26px 28px;text-align:center;box-shadow:var(--shadow)}
+ .cf-ic{width:62px;height:62px;border-radius:50%;background:var(--econ-soft);color:var(--econ);
+   display:grid;place-items:center;font-size:30px;font-weight:800;margin:0 auto 16px}
+ .cf-card h2{display:block;font-family:var(--titulo);font-size:31px;line-height:1.1;font-weight:800;
+   letter-spacing:.3px;margin:0 0 10px;color:var(--ink)}
+ .cf-card p{margin:0 0 10px;color:var(--ink-2);font-size:15px;line-height:1.6}
+ .cf-mail{font-weight:700;color:var(--brand-2);word-break:break-all}
+ .cf-aviso{background:var(--elec-soft);color:var(--ink-2);border-radius:8px;padding:12px 15px;
+   font-size:13.5px;line-height:1.55;text-align:left;margin:18px auto 22px;max-width:560px}
+ .btn-wpp{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:420px;
+   background:#25D366;color:#06331b;border:0;border-radius:10px;padding:16px 24px;
+   font-family:var(--font);font-size:17px;font-weight:800;text-decoration:none;
+   box-shadow:0 6px 18px rgba(37,211,102,.28);transition:filter .15s,transform .08s}
+ .btn-wpp:hover{filter:brightness(1.05)}
+ .btn-wpp:active{transform:translateY(1px)}
+ .btn-wpp svg{width:22px;height:22px;fill:#06331b}
+ .cf-nota{margin:16px 0 0!important;font-size:13px!important;color:var(--muted)!important}
+ @media print{#confirma{display:none!important}}
 </style>
+<script>
+/* Microsoft Clarity — cole o ID do projeto na constante abaixo */
+var CLARITY_ID = "COLAR_AQUI";
+(function(c,l,a,r,i,t,y){
+  if(!i || i === "COLAR_AQUI") return;
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script",CLARITY_ID);
+</script>
 </head>
 <body>
 
@@ -255,29 +292,33 @@
     <div class="gate-logo-wrap"><img class="gate-logo" id="gateLogo" alt="Eleven Equipamentos"></div>
     <span class="gate-eyebrow">Acesso liberado na hora</span>
     <h2 id="gateTit">Calculadora de Economia</h2>
-    <p class="gate-sub">Sem senha e sem cadastro. Deixe seu contato e a calculadora abre em seguida — assim a gente sabe quem simulou e pode ajudar, se você quiser.</p>
+    <p class="gate-sub">Sem senha e sem cadastro. Deixe seu contato, monte a sua operação e enviamos o estudo completo — com economia e payback — para o seu e-mail.</p>
     <form id="gateForm" novalidate autocomplete="on">
       <div class="gate-field">
         <label for="g_nome">Seu nome</label>
         <input id="g_nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos te chamar">
+        <span class="msg" hidden></span>
       </div>
       <div class="gate-field">
         <label for="g_empresa">Empresa</label>
         <input id="g_empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa ou da obra">
+        <span class="msg" hidden></span>
       </div>
       <div class="gate-2col">
         <div class="gate-field">
           <label for="g_email">E-mail</label>
           <input id="g_email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@empresa.com.br">
+        <span class="msg" hidden></span>
         </div>
         <div class="gate-field">
           <label for="g_whats">WhatsApp</label>
           <input id="g_whats" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(41) 99999-9999">
+        <span class="msg" hidden></span>
         </div>
       </div>
       <div class="gate-err" id="gateErr" hidden></div>
       <button type="submit" class="btn gate-btn" id="gateBtn">Abrir a calculadora →</button>
-      <p class="gate-legal">Seus dados ficam só com a Eleven Equipamentos e são usados para falar com você sobre esta simulação. Nada de spam.</p>
+      <p class="gate-legal">Ao continuar, você concorda que a Eleven Equipamentos use seus dados para contato comercial e para enviar o estudo desta simulação. Nada de spam.</p>
     </form>
   </div>
 </div>
@@ -324,7 +365,6 @@
           <option value="4.0">3.000 a 3.500 kg</option>
           <option value="5.5">4.000 kg ou mais</option>
         </select>
-        <small>Usado para estimar o consumo da elétrica.</small>
       </div>
       <div class="field">
         <label>Combustível atual</label>
@@ -392,9 +432,8 @@
           <input id="precoKwh" type="number" min="0" step="0.01" value="0.95">
         </div>
         <div class="field">
-          <label>Consumo da elétrica <span class="u">(kWh/h)</span></label>
+          <label>Consumo estimado da elétrica <span class="u">(kWh/h)</span></label>
           <input id="kwhH" type="number" min="0" step="0.1" value="3.0">
-          <small>Estimado pela capacidade (lítio EP ~2,5–3 kWh/h na faixa 2,5 t, base CTS Silva). Ajuste se souber o valor real da conta de luz.</small>
         </div>
         <div class="field">
           <label>Manutenção do combustível <span class="u">(R$/h)</span></label>
@@ -561,6 +600,22 @@
     <p class="note" id="disclaimer"></p>
   </section>
 
+<!-- ============ CONFIRMAÇÃO — visitante ============ -->
+<section id="confirma" hidden>
+  <div class="cf-card">
+    <div class="cf-ic">&#10003;</div>
+    <h2>Seu estudo está a caminho</h2>
+    <p>Enviamos o resultado completo da sua simulação para <span class="cf-mail" id="cfMail"></span>.</p>
+    <p>A entrega pode levar alguns minutos.</p>
+    <div class="cf-aviso">Não encontrou? Confira as abas <strong>Spam</strong> e <strong>Promoções</strong> do seu e-mail e marque a mensagem como confiável para receber as próximas.</div>
+    <a class="btn-wpp" id="cfWpp" href="https://wa.me/5541997394180" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.85 9.85 0 0 0 12.04 2Zm0 18.02h-.01c-1.52 0-3.01-.41-4.31-1.18l-.31-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.23 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+      Falar agora com um especialista
+    </a>
+    <p class="cf-nota">Um especialista da Eleven revisa os números com você e indica o modelo certo para a sua operação.</p>
+  </div>
+</section>
+
   <footer>
     <strong>Eleven Equipamentos</strong> — Empilhadeiras e movimentação · Pinhais/Curitiba – PR<br>
     Simulação estimativa para fins comerciais. Os valores finais dependem da operação, da tarifa de energia e do modelo escolhido.
@@ -584,7 +639,7 @@ const FUELS = {
   gasolina: {label:'Gasolina', unit:'L', price:6.20, cylinders:false}
 };
 
-let consumoMode = 'cil'; // 'cil' | 'mes'
+let consumoMode = 'cil';
 
 /* =================== UI DINÂMICA =================== */
 $('classe').addEventListener('change',e=>{ $('kwhH').value = e.target.value; });
@@ -594,7 +649,6 @@ $('fuel').addEventListener('change',e=>{
   $('precoFuel').value = f.price.toFixed(2);
   $('lblPrecoFuel').innerHTML = 'Preço do '+f.label+' <span class="u">(R$/'+f.unit+')</span>';
   const isGlp = e.target.value==='glp';
-  // troca/perda só fazem sentido no GLP (cilindros)
   $('f_perda').style.display = isGlp ? '' : 'none';
   $('f_troca').style.display = isGlp ? '' : 'none';
   // modo de consumo
@@ -604,7 +658,6 @@ $('fuel').addEventListener('change',e=>{
       ? (isGlp?'Cilindros por semana':'Consumo por dia')
       : (isGlp?'Kg de '+f.label+' por mês':f.unit+' por mês');
   });
-  if(!isGlp && consumoMode==='cil'){ /* mantém, reinterpretado como por dia */ }
   refreshConsumoFields();
 });
 
@@ -650,14 +703,12 @@ function calcular(){
   const cilTam = num('cilTam');
   if(consumoMode==='cil'){
     if(isGlp){
-      // cilindros por semana -> kg/mês
       consumoMes = num('cilSemana')*cilTam*(52/12);
     }else{
-      // interpretado como unidades por dia (L/dia)
       consumoMes = num('cilSemana')*diasMes;
     }
   }else{
-    consumoMes = num('kgMes'); // já é por mês
+    consumoMes = num('kgMes');
   }
   const consumoAno = consumoMes*12;
   const consumoHora = horasMes>0 ? consumoMes/horasMes : 0;
@@ -673,14 +724,11 @@ function calcular(){
   const tempoTroca= isGlp ? num('tempoTroca') : 0;
 
   // ---- CUSTOS GLP / COMBUSTÍVEL (mensal) ----
-  const cFuel = consumoMes*precoFuel;                 // combustível
-  const cManutG = manutFuel*horasMes;                 // manutenção
-  // trocas de cilindro / mês (só GLP com cilindros)
+  const cFuel = consumoMes*precoFuel;
+  const cManutG = manutFuel*horasMes;
   const trocasMes = (isGlp && cilTam>0) ? consumoMes/cilTam : 0;
-  const cTroca = trocasMes*(tempoTroca/60)*custoOp;   // parada operacional
+  const cTroca = trocasMes*(tempoTroca/60)*custoOp;
   const totalGLP = cFuel + cManutG + cTroca;
-
-  // parcela desperdiçada (subconjunto do combustível, informativo)
   const gasPerdido = cFuel*perdaPct;
 
   // ---- CUSTOS ELÉTRICA (mensal) ----
@@ -706,7 +754,7 @@ function calcular(){
 
   // locação (opcional)
   const locacao = num('locacao');
-  const totalElecLocado = locacao>0 ? (locacao + cEnergia) : null; // manutenção inclusa na locação
+  const totalElecLocado = locacao>0 ? (locacao + cEnergia) : null;
   const econLocacao = totalElecLocado!=null ? (totalGLP - totalElecLocado) : null;
 
   return {
@@ -939,7 +987,12 @@ function drawBars(r){
 
 /* =================== EVENTOS =================== */
 $('calcBtn').addEventListener('click',()=>{
-  const r=calcular();
+  const r=calcular();                       // o cálculo roda sempre
+  const dentro = !window.ELEVEN_INTERNO || window.ELEVEN_INTERNO();
+  if(!dentro && window.ELEVEN_ENVIAR_ESTUDO){
+    window.ELEVEN_ENVIAR_ESTUDO(r);         // visitante: resultado só por e-mail
+    return;
+  }
   render(r);
   $('results').scrollIntoView({behavior:'smooth',block:'start'});
 });
@@ -951,60 +1004,138 @@ refreshConsumoFields();
 </script>
 
 <script>
-/* ============ PORTÃO DE ACESSO — captura de contato (sem login) ============
-   O visitante informa nome, empresa, e-mail e WhatsApp; a calculadora abre em
-   seguida e o contato chega por e-mail (FormSubmit). Quem já preencheu uma vez
-   neste navegador não é perguntado de novo.
-   Para abrir sem o portão (testes internos): calculadora.html?semcadastro=1
-========================================================================== */
+/* ===== Portão de acesso, envio do estudo por e-mail e origem do lead ===== */
 (function(){
-  var DESTINO   = 'adm@comercialeleven.com';   /* para onde chega o lead */
-  var LEAD_KEY  = 'eleven_calc_lead_v1';
-  var PEND_KEY  = 'eleven_calc_lead_pend_v1';
+  var DESTINO  = 'adm@comercialeleven.com';
+  var WPP      = '5541997394180';
+  var LEAD_KEY = 'eleven_calc_lead_v1';
+  var PEND_KEY = 'eleven_calc_lead_pend_v1';
 
   var gate = document.getElementById('gate');
   if(!gate) return;
-  var form = document.getElementById('gateForm');
-  var btn  = document.getElementById('gateBtn');
-  var err  = document.getElementById('gateErr');
+  var form  = document.getElementById('gateForm');
+  var btn   = document.getElementById('gateBtn');
+  var errBox= document.getElementById('gateErr');
   var fNome = document.getElementById('g_nome'),
       fEmp  = document.getElementById('g_empresa'),
       fMail = document.getElementById('g_email'),
       fZap  = document.getElementById('g_whats');
+  var CAMPOS = [fNome, fEmp, fMail, fZap];
 
   function ls(get,k,v){try{return get?localStorage.getItem(k):localStorage.setItem(k,v);}catch(e){return null;}}
+  function esc(v){ return (v==null?'':String(v)); }
 
-  /* logo do cabeçalho reaproveitada no portão */
-  try{
-    var lg = document.querySelector('header.top .logo img');
-    var gl = document.getElementById('gateLogo');
-    if(lg && gl) gl.src = lg.src; else if(gl) gl.style.display='none';
-  }catch(e){}
+  /* ---------- sessão do Portal (mesmas chaves do index.html) ---------- */
+  function portalSess(){
+    try{
+      var v = sessionStorage.getItem('elevenVend');
+      if(v){ var o = JSON.parse(v); if(o && o.u) return {area:'Vendedor', u:o.u, nome:o.nome||o.u, role:o.role||''}; }
+      var t = sessionStorage.getItem('elevenTec');
+      if(t){ var o2 = JSON.parse(t); if(o2 && o2.u) return {area:'Técnico', u:o2.u, nome:o2.nome||o2.u, role:''}; }
+    }catch(e){}
+    return null;
+  }
+  var BYPASS = /[?&]semcadastro=1/.test(location.search);
+  function interno(){ return !!portalSess() || BYPASS; }
+  window.ELEVEN_INTERNO = interno;
 
-  /* ---- envio do lead ---- */
-  function enviar(lead){
-    var corpo = {
-      _subject: 'Calculadora do site — novo contato: ' + (lead.empresa || lead.nome),
-      _template: 'table',
-      _captcha: 'false',
-      Nome: lead.nome, Empresa: lead.empresa, 'E-mail': lead.email,
-      WhatsApp: lead.whatsapp, 'Data/hora': lead.quando, Origem: lead.origem
+  /* ---------- origem do acesso ---------- */
+  var ORIGEM = {};
+  (function(){
+    var q = {}, busca = location.search.replace(/^\?/,'').split('&');
+    for(var i=0;i<busca.length;i++){ var kv = busca[i].split('='); if(kv[0]) q[kv[0]] = decodeURIComponent((kv[1]||'').replace(/\+/g,' ')); }
+    var camp = [], chaves = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'];
+    for(var j=0;j<chaves.length;j++){ if(q[chaves[j]]) camp.push(chaves[j]+'='+q[chaves[j]]); }
+
+    var ua = navigator.userAgent || '';
+    var disp = /Mobi|Android|iPhone|iPad|iPod/i.test(ua) ? 'Celular/tablet' : 'Computador';
+    var nav = 'Outro';
+    if(/Edg\//.test(ua)) nav='Edge';
+    else if(/OPR\/|Opera/.test(ua)) nav='Opera';
+    else if(/Chrome\//.test(ua)) nav='Chrome';
+    else if(/Firefox\//.test(ua)) nav='Firefox';
+    else if(/Safari\//.test(ua)) nav='Safari';
+    if(/Instagram/i.test(ua)) nav += ' dentro do Instagram';
+    else if(/FBAN|FBAV/i.test(ua)) nav += ' dentro do Facebook';
+    else if(/WhatsApp/i.test(ua)) nav += ' dentro do WhatsApp';
+
+    ORIGEM = {
+      'Data/hora': new Date().toLocaleString('pt-BR'),
+      'Página': location.href.split('#')[0],
+      'Veio de': document.referrer || 'acesso direto',
+      'Dispositivo': disp + ' · ' + nav,
+      'Campanha': camp.length ? camp.join(' · ') : '—',
+      'IP': '—', 'Cidade': '—', 'Estado': '—', 'Operadora': '—'
     };
-    return fetch('https://formsubmit.co/ajax/' + DESTINO, {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(corpo)
-    });
+
+    try{
+      var ctl = ('AbortController' in window) ? new AbortController() : null;
+      var t = setTimeout(function(){ try{ if(ctl) ctl.abort(); }catch(e){} }, 2000);
+      var fim = function(){ clearTimeout(t); };
+      fetch('https://ipapi.co/json/', ctl ? {signal:ctl.signal} : {})
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if(!d || d.error) return;
+          ORIGEM['IP'] = d.ip || '—';
+          ORIGEM['Cidade'] = d.city || '—';
+          ORIGEM['Estado'] = d.region || d.region_code || '—';
+          ORIGEM['Operadora'] = d.org || d.asn || '—';
+        })
+        .then(fim, fim);
+    }catch(e){}
+  })();
+
+  /* ---------- validação ---------- */
+  var SEQ = ['qwertyuiop','asdfghjkl','zxcvbnm','1234567890','0987654321','poiuytrewq','lkjhgfdsa','mnbvcxz'];
+  function repetido(s){ return /(.)\1\1/.test(s); }
+  function distintas(s){
+    var l = s.replace(/[^a-záàâãéèêíïóôõöúüçñ]/g,''), vistas = {}, n = 0;
+    for(var i=0;i<l.length;i++){ if(!vistas[l[i]]){ vistas[l[i]] = 1; n++; } }
+    return n;
   }
-  /* se um envio falhou (sem internet), tenta de novo na próxima visita */
-  function reenviarPendentes(){
-    var p = ls(true, PEND_KEY); if(!p) return;
-    try{ p = JSON.parse(p); }catch(e){ return; }
-    if(!p || !p.email) return;
-    enviar(p).then(function(r){ if(r && r.ok) ls(false, PEND_KEY, ''); }).catch(function(){});
+  function sequencia(s){
+    for(var i=0;i<SEQ.length;i++){
+      for(var j=0;j+4<=SEQ[i].length;j++){ if(s.indexOf(SEQ[i].substr(j,4)) >= 0) return true; }
+    }
+    return false;
+  }
+  function textoRuim(v){
+    var s = v.toLowerCase().replace(/\s+/g,'');
+    if(s.length < 3) return 'Escreva pelo menos 3 letras.';
+    if(repetido(s)) return 'Esse texto não parece um nome de verdade.';
+    if(distintas(s) < 2) return 'Esse texto não parece um nome de verdade.';
+    if(sequencia(s)) return 'Esse texto não parece um nome de verdade.';
+    return '';
+  }
+  var DESCARTAVEIS = ['mailinator','tempmail','temp-mail','tempmailo','guerrillamail','guerrilla','sharklasers','grr.la','yopmail','10minutemail','10minmail','trashmail','fakeinbox','fake-mail','maildrop','getnada','nada.email','dispostable','mailnesia','throwawaymail','throwaway','mohmal','emailondeck','spamgourmet','mytemp','tempr.email','discard.email','moakt','inboxbear','harakirimail','burnermail','einrot','mailcatch','armyspy','cuvox','dayrep','rhyta','teleworm','jetable','trbvm','mailinator2','spam4','byom.de'];
+  function emailRuim(v){
+    if(!/^[^\s@]+@[^\s@]+$/.test(v)) return 'Confira o e-mail — parece incompleto.';
+    var dom = v.split('@')[1].toLowerCase();
+    if(!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}$/.test(dom)) return 'Confira o e-mail — parece incompleto.';
+    for(var i=0;i<DESCARTAVEIS.length;i++){ if(dom.indexOf(DESCARTAVEIS[i]) >= 0) return 'Use um e-mail que você acompanha — vamos enviar o estudo para ele.'; }
+    return '';
+  }
+  var DDDS = '11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99'.split(',');
+  function foneRuim(v){
+    var d = v.replace(/\D/g,'');
+    if(d.length !== 10 && d.length !== 11) return 'Informe o número com DDD.';
+    if(/^(\d)\1+$/.test(d)) return 'Esse número não parece válido.';
+    var ddd = d.substr(0,2);
+    var achou = false; for(var i=0;i<DDDS.length;i++){ if(DDDS[i] === ddd){ achou = true; break; } }
+    if(!achou) return 'Esse DDD não existe no Brasil.';
+    if(d.length === 11 && d.charAt(2) !== '9') return 'Celular de 11 dígitos começa com 9 depois do DDD.';
+    return '';
   }
 
-  /* ---- máscara de telefone ---- */
+  function aviso(campo, texto){
+    var el = campo.parentElement.querySelector('.msg');
+    if(texto){ campo.classList.add('erro'); if(el){ el.textContent = texto; el.hidden = false; } }
+    else { campo.classList.remove('erro'); if(el){ el.textContent = ''; el.hidden = true; } }
+  }
+  function limpaAvisos(){ for(var i=0;i<CAMPOS.length;i++) aviso(CAMPOS[i], ''); if(errBox) errBox.hidden = true; }
+  for(var c=0;c<CAMPOS.length;c++){ CAMPOS[c].addEventListener('input', function(){ aviso(this, ''); }); }
+
+  /* máscara do telefone */
   fZap.addEventListener('input', function(){
     var d = this.value.replace(/\D/g,'').slice(0,11), s = '';
     if(d.length) s = '(' + d.slice(0,2);
@@ -1013,14 +1144,151 @@ refreshConsumoFields();
     this.value = s;
   });
 
-  function limpaErro(){ [fNome,fEmp,fMail,fZap].forEach(function(c){ c.classList.remove('erro'); }); err.hidden = true; }
-  [fNome,fEmp,fMail,fZap].forEach(function(c){ c.addEventListener('input', limpaErro); });
+  /* ---------- logo do portão ---------- */
+  try{
+    var lg = document.querySelector('header.top .logo img'), gl = document.getElementById('gateLogo');
+    if(lg && gl) gl.src = lg.src; else if(gl) gl.style.display = 'none';
+  }catch(e){}
 
-  function falha(campo, msg){
-    campo.classList.add('erro'); err.textContent = msg; err.hidden = false; campo.focus(); return false;
+  /* ---------- envio ---------- */
+  function postar(corpo){
+    return fetch('https://formsubmit.co/ajax/' + DESTINO, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(corpo)
+    });
+  }
+  function comOrigem(o){ for(var k in ORIGEM){ if(ORIGEM.hasOwnProperty(k)) o[k] = ORIGEM[k]; } return o; }
+
+  function leadSalvo(){
+    try{ return JSON.parse(ls(true, LEAD_KEY) || 'null'); }catch(e){ return null; }
   }
 
-  /* ---- abre a calculadora ---- */
+  /* contato sem simulação — rede de segurança se o visitante sair antes de calcular */
+  var timerContato = null, estudoEnviado = false;
+  function enviarContato(lead){
+    if(estudoEnviado) return;
+    var corpo = comOrigem({
+      _subject: 'Calculadora do site — contato (sem simulação): ' + (lead.empresa || lead.nome),
+      _template: 'table', _captcha: 'false',
+      name: lead.nome, email: lead.email,
+      Nome: lead.nome, Empresa: lead.empresa, 'E-mail': lead.email, WhatsApp: lead.whatsapp,
+      Situação: 'Preencheu o contato e não concluiu a simulação'
+    });
+    postar(corpo).then(function(r){ if(r && r.ok) ls(false, PEND_KEY, ''); }).catch(function(){});
+  }
+  function reenviarPendente(){
+    var p; try{ p = JSON.parse(ls(true, PEND_KEY) || 'null'); }catch(e){ return; }
+    if(p && p.email) enviarContato(p);
+  }
+
+  /* ---------- estudo completo (visitante) ---------- */
+  function textoEstudo(lead, r){
+    var fn = r.f.label, un = r.f.unit;
+    var L = [];
+    L.push('Olá, ' + lead.nome + '!');
+    L.push('');
+    L.push('Segue o resultado da simulação que você fez na calculadora da Eleven Equipamentos.');
+    L.push('');
+    L.push('SUA OPERAÇÃO HOJE (' + fn + ')');
+    L.push('Custo anual estimado: ' + BRL(r.totalGLP * 12));
+    L.push('');
+    L.push('COM A EMPILHADEIRA ELÉTRICA A LÍTIO');
+    L.push('Custo anual estimado: ' + BRL(r.totalELEC * 12));
+    L.push('');
+    L.push('ECONOMIA');
+    L.push('Por ano: ' + BRL(r.econAno));
+    L.push('Em 5 anos: ' + BRL(r.econAno * 5));
+    L.push('Retorno do investimento: ' + paybackTexto(r.paybackMeses));
+    L.push('');
+    L.push('PREMISSAS USADAS');
+    L.push('Preço do ' + fn + ': ' + BRL2(num('precoFuel')) + '/' + un);
+    L.push('Preço da energia: ' + BRL2(num('precoKwh')) + '/kWh');
+    L.push('Consumo da elétrica: ' + NUM.format(num('kwhH')) + ' kWh/h');
+    L.push('Consumo atual: ' + NUM.format(r.consumoMes) + ' ' + un + '/mês');
+    L.push('Turnos: ' + document.getElementById('turnos').value);
+    L.push('Horas por dia: ' + NUM.format(r.horasDia));
+    L.push('Dias por mês: ' + NUM.format(r.diasMes));
+    L.push('Valor considerado da máquina elétrica: ' + BRL(r.precoElec));
+    L.push('');
+    L.push('Um especialista pode revisar esses números com você e indicar o modelo certo para a sua operação.');
+    L.push('');
+    L.push('--');
+    L.push('Eleven Equipamentos');
+    L.push('Empilhadeiras e movimentação — Pinhais/PR');
+    L.push('www.comercialeleven.com');
+    L.push('Vendas: (41) 99739-4180 · vendas_epbrasil@comercialeleven.com');
+    return L.join('\n');
+  }
+
+  function maquinaTexto(){
+    var marca = (document.getElementById('marca').value || '').trim();
+    var modelo = (document.getElementById('modelo').value || '').trim();
+    var cap = document.getElementById('classe');
+    var capTxt = cap.options[cap.selectedIndex].text;
+    var m = (marca + ' ' + modelo).trim();
+    return m ? (m + ' (' + capTxt + ')') : capTxt;
+  }
+
+  function painelConfirma(lead, r){
+    var res = document.getElementById('results');
+    if(res) res.style.display = 'none';
+    var cf = document.getElementById('confirma');
+    document.getElementById('cfMail').textContent = lead.email;
+
+    var msg = 'Olá! Sou ' + lead.nome + ', da ' + lead.empresa + '. '
+            + 'Acabei de fazer a simulação na calculadora do site.\n'
+            + 'Máquina: ' + maquinaTexto() + '\n'
+            + 'Combustível atual: ' + r.f.label + '\n'
+            + 'Turnos: ' + document.getElementById('turnos').value + ' · ' + NUM.format(r.horasDia) + ' h/dia\n'
+            + 'Gostaria de falar com um especialista.';
+    document.getElementById('cfWpp').href = 'https://wa.me/' + WPP + '?text=' + encodeURIComponent(msg);
+
+    cf.hidden = false;
+    cf.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  window.ELEVEN_ENVIAR_ESTUDO = function(r){
+    var lead = leadSalvo();
+    if(!lead){ return; }
+    if(timerContato){ clearTimeout(timerContato); timerContato = null; }
+    estudoEnviado = true;
+
+    var bt = document.getElementById('calcBtn');
+    var rot = bt.textContent;
+    bt.disabled = true; bt.textContent = 'Enviando o estudo...';
+
+    var corpo = comOrigem({
+      _subject: 'Calculadora do site — ' + lead.empresa,
+      _template: 'table', _captcha: 'false',
+      _autoresponse: textoEstudo(lead, r),
+      name: lead.nome, email: lead.email,
+      Nome: lead.nome, Empresa: lead.empresa, 'E-mail': lead.email, WhatsApp: lead.whatsapp,
+      'Máquina atual': maquinaTexto(),
+      'Combustível': r.f.label,
+      'Turnos': document.getElementById('turnos').value,
+      'Horas/dia': NUM.format(r.horasDia),
+      'Dias/mês': NUM.format(r.diasMes),
+      'Consumo atual': NUM.format(r.consumoMes) + ' ' + r.f.unit + '/mês',
+      'Custo anual hoje': BRL(r.totalGLP * 12),
+      'Custo anual elétrica': BRL(r.totalELEC * 12),
+      'Economia anual': BRL(r.econAno),
+      'Economia em 5 anos': BRL(r.econAno * 5),
+      'Payback': paybackTexto(r.paybackMeses),
+      'Valor da máquina': BRL(r.precoElec)
+    });
+
+    var pronto = false;
+    function segue(){
+      if(pronto) return; pronto = true;
+      bt.disabled = false; bt.textContent = rot;
+      painelConfirma(lead, r);
+    }
+    setTimeout(segue, 2500);
+    postar(corpo).then(function(res){ if(res && res.ok) ls(false, PEND_KEY, ''); }).catch(function(){}).then(segue, segue);
+  };
+
+  /* ---------- portão ---------- */
   function liberar(){
     gate.hidden = true;
     document.body.classList.remove('gate-travado');
@@ -1030,40 +1298,36 @@ refreshConsumoFields();
 
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
-    limpaErro();
+    limpaAvisos();
     var nome = fNome.value.trim(), emp = fEmp.value.trim(),
         mail = fMail.value.trim(), zap = fZap.value.trim();
+    var e1 = textoRuim(nome), e2 = textoRuim(emp), e3 = emailRuim(mail), e4 = foneRuim(zap), primeiro = null;
+    if(e1){ aviso(fNome, e1); primeiro = primeiro || fNome; }
+    if(e2){ aviso(fEmp,  e2); primeiro = primeiro || fEmp; }
+    if(e3){ aviso(fMail, e3); primeiro = primeiro || fMail; }
+    if(e4){ aviso(fZap,  e4); primeiro = primeiro || fZap; }
+    if(primeiro){ try{ primeiro.focus(); }catch(e){} return; }
 
-    if(nome.length < 2)  return falha(fNome, 'Escreva seu nome para continuar.');
-    if(emp.length  < 2)  return falha(fEmp,  'Informe o nome da empresa ou da obra.');
-    if(!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(mail)) return falha(fMail, 'Confira o e-mail — parece incompleto.');
-    if(zap.replace(/\D/g,'').length < 10) return falha(fZap, 'Informe o WhatsApp com DDD.');
-
-    var lead = { nome:nome, empresa:emp, email:mail, whatsapp:zap,
-                 quando:new Date().toLocaleString('pt-BR'), origem:location.host || 'local' };
-
-    btn.disabled = true; btn.textContent = 'Abrindo...';
+    var lead = { nome:nome, empresa:emp, email:mail, whatsapp:zap };
     ls(false, LEAD_KEY, JSON.stringify(lead));
-    ls(false, PEND_KEY, JSON.stringify(lead));   /* sai da fila quando o envio confirmar */
-
-    var fim = false;
-    function segue(){ if(fim) return; fim = true; liberar(); }
-    setTimeout(segue, 2500);   /* internet ruim não segura o cliente */
-
-    enviar(lead)
-      .then(function(r){ if(r && r.ok) ls(false, PEND_KEY, ''); })
-      .catch(function(){})
-      .then(segue, segue);
+    ls(false, PEND_KEY, JSON.stringify(lead));
+    liberar();
+    timerContato = setTimeout(function(){ enviarContato(lead); }, 180000);
   });
 
-  /* ---- decide se mostra o portão ---- */
-  var livre = /[?&]semcadastro=1/.test(location.search);
-  if(livre || ls(true, LEAD_KEY)){
+  /* ---------- entrada ---------- */
+  if(interno()){
     gate.hidden = true;
-    reenviarPendentes();
+  }else if(leadSalvo()){
+    gate.hidden = true;
+    reenviarPendente();
+    var bl = document.getElementById('calcBtn');
+    if(bl) bl.textContent = 'Receber meu estudo por e-mail →';
   }else{
     gate.hidden = false;
     document.body.classList.add('gate-travado');
+    var bv = document.getElementById('calcBtn');
+    if(bv) bv.textContent = 'Receber meu estudo por e-mail →';
     setTimeout(function(){ try{ fNome.focus(); }catch(e){} }, 120);
   }
 })();
