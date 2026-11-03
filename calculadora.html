@@ -1315,7 +1315,18 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
       custo_anual_hoje: r.totalGLP * 12, custo_anual_eletrica: r.totalELEC * 12,
       economia_anual: r.econAno, economia_5anos: r.econAno * 5,
       payback_meses: isFinite(r.paybackMeses) ? r.paybackMeses : null,
-      payback_texto: paybackTexto(r.paybackMeses)
+      payback_texto: paybackTexto(r.paybackMeses),
+      // detalhamento para o Estudo de Economia em PDF (montado no portal)
+      combustivel_id: document.getElementById('fuel').value,
+      horas_mes: r.horasMes, consumo_hora: r.consumoHora,
+      custo_combustivel: r.cFuel, custo_manut_hoje: r.cManutG, custo_troca: r.cTroca, trocas_mes: r.trocasMes,
+      gas_perdido: r.gasPerdido, perda_pct: r.perdaPct * 100, tempo_troca: r.tempoTroca, custo_operador: r.custoOp,
+      kwh_mes: r.kwhMes, custo_energia: r.cEnergia, custo_manut_eletrica: r.cManutE,
+      manut_hora_hoje: num('manutFuel'), manut_hora_eletrica: num('manutElec'),
+      economia_mensal: r.econMes, economia_pct: r.econPct,
+      entrada: r.entrada, investimento: r.investLiq,
+      horizonte_meses: r.horizonte, economia_horizonte: r.econHorizonte,
+      locacao: r.locacao, economia_locacao: r.econLocacao
     };
     var dados = dadosLead('estudo', lead, estudo);
 
