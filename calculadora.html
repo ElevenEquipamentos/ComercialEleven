@@ -316,6 +316,7 @@ var CLARITY_ID = "COLAR_AQUI";
         <span class="msg" hidden></span>
         </div>
       </div>
+      <input type="text" id="g_site" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div class="gate-err" id="gateErr" hidden></div>
       <button type="submit" class="btn gate-btn" id="gateBtn">Abrir a calculadora →</button>
       <p class="gate-legal">Ao continuar, você concorda que a Eleven Equipamentos use seus dados para contato comercial e para enviar o estudo desta simulação. Nada de spam.</p>
@@ -1005,8 +1006,10 @@ refreshConsumoFields();
 
 <script>
 /* ===== Portão de acesso, envio do estudo por e-mail e origem do lead ===== */
+var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // portal da Eleven: grava o lead e manda os e-mails
 (function(){
   var DESTINO  = 'adm@comercialeleven.com';
+  var COPIA    = 'suporte@comercialeleven.com';
   var WPP      = '5541997394180';
   var LEAD_KEY = 'eleven_calc_lead_v1';
   var PEND_KEY = 'eleven_calc_lead_pend_v1';
@@ -1019,7 +1022,8 @@ refreshConsumoFields();
   var fNome = document.getElementById('g_nome'),
       fEmp  = document.getElementById('g_empresa'),
       fMail = document.getElementById('g_email'),
-      fZap  = document.getElementById('g_whats');
+      fZap  = document.getElementById('g_whats'),
+      fSite = document.getElementById('g_site');
   var CAMPOS = [fNome, fEmp, fMail, fZap];
 
   function ls(get,k,v){try{return get?localStorage.getItem(k):localStorage.setItem(k,v);}catch(e){return null;}}
@@ -1150,15 +1154,48 @@ refreshConsumoFields();
     if(lg && gl) gl.src = lg.src; else if(gl) gl.style.display = 'none';
   }catch(e){}
 
-  /* ---------- envio ---------- */
+  /* ---------- envio ----------
+     Via 1: portal da Eleven (ELEVEN_API_LEADS) — salva o lead e manda os e-mails pelo SMTP do servidor.
+     Via 2: FormSubmit — segunda via enquanto o portal não confirma que o SMTP dele está ligado
+            (ou se o portal não responder). Assim nada se perde se uma das vias falhar. */
   function postar(corpo){
+    corpo._cc = COPIA;
     return fetch('https://formsubmit.co/ajax/' + DESTINO, {
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(corpo)
     });
   }
+  function postarApi(dados){
+    var ctl = ('AbortController' in window) ? new AbortController() : null;
+    var t = setTimeout(function(){ try{ if(ctl) ctl.abort(); }catch(e){} }, 8000);
+    var op = {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(dados)
+    };
+    if(ctl) op.signal = ctl.signal;
+    return fetch(ELEVEN_API_LEADS, op)
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok: r.ok && j && j.ok, smtp: !!(j && j.smtp)}; }); })
+      .then(function(v){ clearTimeout(t); return v; }, function(){ clearTimeout(t); return {ok:false, smtp:false}; });
+  }
+  /* manda pelas duas vias; resolve true se pelo menos uma recebeu */
+  function enviar(dados, corpo){
+    return postarApi(dados).then(function(api){
+      if(api.ok && api.smtp) return true;
+      return postar(corpo)
+        .then(function(r){ return !!(r && r.ok) || api.ok; }, function(){ return api.ok; });
+    });
+  }
   function comOrigem(o){ for(var k in ORIGEM){ if(ORIGEM.hasOwnProperty(k)) o[k] = ORIGEM[k]; } return o; }
+  function copiaOrigem(){ var o = {}; for(var k in ORIGEM){ if(ORIGEM.hasOwnProperty(k)) o[k] = ORIGEM[k]; } return o; }
+  function dadosLead(tipo, lead, estudo){
+    var d = { tipo: tipo, site: fSite ? fSite.value : '',
+              lead: { nome: lead.nome, empresa: lead.empresa, email: lead.email, whatsapp: lead.whatsapp },
+              origem: copiaOrigem() };
+    if(estudo) d.estudo = estudo;
+    return d;
+  }
 
   function leadSalvo(){
     try{ return JSON.parse(ls(true, LEAD_KEY) || 'null'); }catch(e){ return null; }
@@ -1175,11 +1212,16 @@ refreshConsumoFields();
       Nome: lead.nome, Empresa: lead.empresa, 'E-mail': lead.email, WhatsApp: lead.whatsapp,
       Situação: 'Preencheu o contato e não concluiu a simulação'
     });
-    postar(corpo).then(function(r){ if(r && r.ok) ls(false, PEND_KEY, ''); }).catch(function(){});
+    enviar(dadosLead('contato', lead), corpo).then(function(ok){ if(ok && !estudoEnviado) ls(false, PEND_KEY, ''); });
   }
   function reenviarPendente(){
     var p; try{ p = JSON.parse(ls(true, PEND_KEY) || 'null'); }catch(e){ return; }
-    if(p && p.email) enviarContato(p);
+    if(!p || !p.email) return;
+    if(p.pendente && p.pendente.dados && p.pendente.corpo){
+      enviar(p.pendente.dados, p.pendente.corpo).then(function(ok){ if(ok) ls(false, PEND_KEY, ''); });
+    }else{
+      enviarContato(p);
+    }
   }
 
   /* ---------- estudo completo (visitante) ---------- */
@@ -1258,6 +1300,25 @@ refreshConsumoFields();
     var rot = bt.textContent;
     bt.disabled = true; bt.textContent = 'Enviando o estudo...';
 
+    var cap = document.getElementById('classe');
+    var estudo = {
+      maquina: maquinaTexto(),
+      marca: (document.getElementById('marca').value || '').trim(),
+      modelo: (document.getElementById('modelo').value || '').trim(),
+      capacidade: cap.options[cap.selectedIndex].text,
+      combustivel: r.f.label, unidade: r.f.unit,
+      turnos: document.getElementById('turnos').value,
+      horas_dia: r.horasDia, dias_mes: r.diasMes, consumo_mes: r.consumoMes,
+      preco_combustivel: num('precoFuel'), preco_kwh: num('precoKwh'), kwh_h: num('kwhH'),
+      valor_maquina: r.precoElec,
+      custo_mensal_hoje: r.totalGLP, custo_mensal_eletrica: r.totalELEC,
+      custo_anual_hoje: r.totalGLP * 12, custo_anual_eletrica: r.totalELEC * 12,
+      economia_anual: r.econAno, economia_5anos: r.econAno * 5,
+      payback_meses: isFinite(r.paybackMeses) ? r.paybackMeses : null,
+      payback_texto: paybackTexto(r.paybackMeses)
+    };
+    var dados = dadosLead('estudo', lead, estudo);
+
     var corpo = comOrigem({
       _subject: 'Calculadora do site — ' + lead.empresa,
       _template: 'table', _captcha: 'false',
@@ -1285,7 +1346,11 @@ refreshConsumoFields();
       painelConfirma(lead, r);
     }
     setTimeout(segue, 2500);
-    postar(corpo).then(function(res){ if(res && res.ok) ls(false, PEND_KEY, ''); }).catch(function(){}).then(segue, segue);
+    enviar(dados, corpo).then(function(ok){
+      if(ok) ls(false, PEND_KEY, '');
+      else ls(false, PEND_KEY, JSON.stringify({ nome: lead.nome, empresa: lead.empresa, email: lead.email, whatsapp: lead.whatsapp,
+                                               pendente: { dados: dados, corpo: corpo } }));
+    }).then(segue, segue);
   };
 
   /* ---------- portão ---------- */
