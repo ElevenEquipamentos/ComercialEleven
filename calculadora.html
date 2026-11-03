@@ -271,6 +271,17 @@
  .btn-wpp:active{transform:translateY(1px)}
  .btn-wpp svg{width:22px;height:22px;fill:#06331b}
  .cf-nota{margin:16px 0 0!important;font-size:13px!important;color:var(--muted)!important}
+ .gate-field .msg button.sug{all:unset;cursor:pointer;text-decoration:underline;font-weight:800}
+ .cf-troca{margin:14px 0 0;font-size:13px;color:var(--muted)}
+ .cf-troca button.lk{all:unset;cursor:pointer;color:var(--brand-2);font-weight:700;text-decoration:underline}
+ .cf-edit{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px auto 0;max-width:420px}
+ .cf-edit[hidden]{display:none}
+ .cf-edit input{flex:1;min-width:200px;padding:11px 12px;border:1.5px solid var(--line, #E3E3E3);border-radius:10px;font:inherit;font-size:15px}
+ .cf-edit button{padding:11px 16px;border:0;border-radius:10px;background:var(--brand-2);color:#fff;font:inherit;font-weight:800;cursor:pointer}
+ .cf-edit .msg{flex-basis:100%;font-size:12.5px;font-weight:600;color:var(--brand-2);text-align:left}
+ .cf-edit .msg button.sug{all:unset;cursor:pointer;text-decoration:underline;font-weight:800}
+ .calc-para{margin:8px 0 0;font-size:13px;color:var(--muted)}
+ .calc-para button{all:unset;cursor:pointer;color:var(--brand-2);font-weight:700;text-decoration:underline}
  @media print{#confirma{display:none!important}}
 </style>
 <script>
@@ -491,6 +502,7 @@ var CLARITY_ID = "COLAR_AQUI";
     </div>
     <div class="actions noprint">
       <button class="btn btn-primary" id="calcBtn">Calcular minha economia →</button>
+      <p class="calc-para" id="calcPara" hidden></p>
       <button class="btn btn-ghost" id="printBtn" style="display:none">🖨 Imprimir / salvar proposta</button>
     </div>
   </section>
@@ -608,6 +620,12 @@ var CLARITY_ID = "COLAR_AQUI";
     <h2>Seu estudo está a caminho</h2>
     <p>Enviamos o resultado completo da sua simulação para <span class="cf-mail" id="cfMail"></span>.</p>
     <p>A entrega pode levar alguns minutos.</p>
+    <p class="cf-troca">E-mail errado? <button type="button" class="lk" id="cfTroca">Corrigir e reenviar</button></p>
+    <div class="cf-edit" id="cfEdit" hidden>
+      <input type="email" id="cfNovo" inputmode="email" autocomplete="email" placeholder="voce@empresa.com.br" aria-label="E-mail correto">
+      <button type="button" id="cfReenv">Reenviar estudo</button>
+      <span class="msg" id="cfMsg" hidden></span>
+    </div>
     <div class="cf-aviso">Não encontrou? Confira as abas <strong>Spam</strong> e <strong>Promoções</strong> do seu e-mail e marque a mensagem como confiável para receber as próximas.</div>
     <a class="btn-wpp" id="cfWpp" href="https://wa.me/5541997394180" rel="noopener">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.85 9.85 0 0 0 12.04 2Zm0 18.02h-.01c-1.52 0-3.01-.41-4.31-1.18l-.31-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.23-8.23 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
@@ -1112,8 +1130,30 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     return '';
   }
   var DESCARTAVEIS = ['mailinator','tempmail','temp-mail','tempmailo','guerrillamail','guerrilla','sharklasers','grr.la','yopmail','10minutemail','10minmail','trashmail','fakeinbox','fake-mail','maildrop','getnada','nada.email','dispostable','mailnesia','throwawaymail','throwaway','mohmal','emailondeck','spamgourmet','mytemp','tempr.email','discard.email','moakt','inboxbear','harakirimail','burnermail','einrot','mailcatch','armyspy','cuvox','dayrep','rhyta','teleworm','jetable','trbvm','mailinator2','spam4','byom.de'];
+  // erros de digitação comuns no domínio: sugere o certo ("Você quis dizer ...@gmail.com?")
+  var DOM_CERTO = { gmail:'gmail.com', hotmail:'hotmail.com', outlook:'outlook.com', yahoo:'yahoo.com.br', icloud:'icloud.com', live:'live.com', bol:'bol.com.br', uol:'uol.com.br', terra:'terra.com.br' };
+  var DOM_ERRADO = {
+    'gmai.com':'gmail.com','gmial.com':'gmail.com','gmal.com':'gmail.com','gmil.com':'gmail.com','gamil.com':'gmail.com','gnail.com':'gmail.com','gmali.com':'gmail.com',
+    'gmeil.com':'gmail.com','gmaill.com':'gmail.com','gmail.co':'gmail.com','gmail.con':'gmail.com','gmail.cm':'gmail.com','gmail.om':'gmail.com','gmail.cpm':'gmail.com',
+    'gmail.com.br':'gmail.com','gmail.comm':'gmail.com','gmsil.com':'gmail.com','gmaio.com':'gmail.com','gimail.com':'gmail.com','gemail.com':'gmail.com','g.mail.com':'gmail.com',
+    'hotmal.com':'hotmail.com','hotmai.com':'hotmail.com','hotmial.com':'hotmail.com','hotamil.com':'hotmail.com','hotmil.com':'hotmail.com','homail.com':'hotmail.com',
+    'hotmail.co':'hotmail.com','hotmail.con':'hotmail.com','hotmail.cm':'hotmail.com','hormail.com':'hotmail.com','hotmaill.com':'hotmail.com','hotmail.om':'hotmail.com',
+    'outlok.com':'outlook.com','outllok.com':'outlook.com','outloo.com':'outlook.com','otlook.com':'outlook.com','outlook.co':'outlook.com','outlook.con':'outlook.com','outlook.com.b':'outlook.com',
+    'yaho.com.br':'yahoo.com.br','yahho.com.br':'yahoo.com.br','yahoo.com.b':'yahoo.com.br','yahoo.con.br':'yahoo.com.br','yaoo.com.br':'yahoo.com.br','yahoo.combr':'yahoo.com.br',
+    'iclod.com':'icloud.com','icoud.com':'icloud.com','icloud.co':'icloud.com','icloud.con':'icloud.com',
+    'uol.com.b':'uol.com.br','uol.con.br':'uol.com.br','bol.com.b':'bol.com.br','bol.con.br':'bol.com.br','terra.com.b':'terra.com.br'
+  };
+  function emailSugestao(v){
+    var p = String(v || '').trim().toLowerCase().split('@'); if(p.length !== 2 || !p[0] || !p[1]) return '';
+    var d = p[1], c = DOM_ERRADO[d];
+    if(!c){ d = d.replace(/\.con(\.|$)/,'.com$1').replace(/\.cmo(\.|$)/,'.com$1').replace(/\.combr$/,'.com.br').replace(/\.com\.bt$/,'.com.br'); if(d !== p[1]) c = d; }
+    if(!c){ var base = p[1].split('.')[0]; if(DOM_CERTO[base] && p[1] !== DOM_CERTO[base] && !/^(yahoo|hotmail|outlook|live)\.com(\.br)?$/.test(p[1])) c = DOM_CERTO[base]; }
+    return c ? p[0] + '@' + c : '';
+  }
   function emailRuim(v){
     if(!/^[^\s@]+@[^\s@]+$/.test(v)) return 'Confira o e-mail — parece incompleto.';
+    var sug = emailSugestao(v);
+    if(sug) return { texto: 'Você quis dizer ', sug: sug };
     var dom = v.split('@')[1].toLowerCase();
     if(!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}$/.test(dom)) return 'Confira o e-mail — parece incompleto.';
     for(var i=0;i<DESCARTAVEIS.length;i++){ if(dom.indexOf(DESCARTAVEIS[i]) >= 0) return 'Use um e-mail que você acompanha — vamos enviar o estudo para ele.'; }
@@ -1133,8 +1173,20 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
 
   function aviso(campo, texto){
     var el = campo.parentElement.querySelector('.msg');
+    if(texto && typeof texto === 'object'){
+      campo.classList.add('erro');
+      if(el){ mostraSugestao(el, texto, function(){ campo.value = texto.sug; aviso(campo, ''); }); }
+      return;
+    }
     if(texto){ campo.classList.add('erro'); if(el){ el.textContent = texto; el.hidden = false; } }
     else { campo.classList.remove('erro'); if(el){ el.textContent = ''; el.hidden = true; } }
+  }
+  function mostraSugestao(el, t, aplicar){
+    el.textContent = t.texto;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sug'; b.textContent = t.sug;
+    b.addEventListener('click', aplicar);
+    el.appendChild(b); el.appendChild(document.createTextNode('? Toque para corrigir.'));
+    el.hidden = false;
   }
   function limpaAvisos(){ for(var i=0;i<CAMPOS.length;i++) aviso(CAMPOS[i], ''); if(errBox) errBox.hidden = true; }
   for(var c=0;c<CAMPOS.length;c++){ CAMPOS[c].addEventListener('input', function(){ aviso(this, ''); }); }
@@ -1290,7 +1342,51 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     cf.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
+  var ultimoCalculo = null;
+  function mostraPara(){
+    var lead = leadSalvo(), el = document.getElementById('calcPara');
+    if(!el) return;
+    if(!lead || !lead.email || interno()){ el.hidden = true; return; }
+    var sg = emailSugestao(lead.email);
+    if(sg){
+      el.textContent = 'O estudo iria para ' + lead.email + '. Você quis dizer ';
+      var c = document.createElement('button'); c.type = 'button'; c.textContent = sg;
+      c.addEventListener('click', function(){ lead.email = sg; ls(false, LEAD_KEY, JSON.stringify(lead)); mostraPara(); });
+      el.appendChild(c); el.appendChild(document.createTextNode('? '));
+      el.hidden = false;
+      return;
+    }
+    el.textContent = 'O estudo vai para ' + lead.email + ' · ';
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = 'trocar e-mail';
+    b.addEventListener('click', function(){
+      var n = prompt('Para qual e-mail enviamos o estudo?', lead.email);
+      if(n == null) return; n = n.trim();
+      var e = emailRuim(n);
+      if(e && typeof e === 'object'){ if(confirm('Você quis dizer ' + e.sug + '?')) n = e.sug; else return; }
+      else if(e){ alert(e); return; }
+      lead.email = n; ls(false, LEAD_KEY, JSON.stringify(lead)); mostraPara();
+    });
+    el.appendChild(b); el.hidden = false;
+  }
+  (function(){
+    var tb = document.getElementById('cfTroca'), box = document.getElementById('cfEdit'), inp = document.getElementById('cfNovo'),
+        go = document.getElementById('cfReenv'), msg = document.getElementById('cfMsg');
+    if(!tb) return;
+    tb.addEventListener('click', function(){ var l = leadSalvo(); inp.value = l ? l.email : ''; box.hidden = false; msg.hidden = true; inp.focus(); });
+    inp.addEventListener('input', function(){ msg.hidden = true; });
+    go.addEventListener('click', function(){
+      var n = inp.value.trim(), e = emailRuim(n);
+      if(e && typeof e === 'object'){ mostraSugestao(msg, e, function(){ inp.value = e.sug; msg.hidden = true; }); return; }
+      if(e){ msg.textContent = e; msg.hidden = false; return; }
+      var l = leadSalvo(); if(!l || !ultimoCalculo) return;
+      l.email = n; ls(false, LEAD_KEY, JSON.stringify(l));
+      box.hidden = true; mostraPara();
+      window.ELEVEN_ENVIAR_ESTUDO(ultimoCalculo);
+    });
+  })();
+
   window.ELEVEN_ENVIAR_ESTUDO = function(r){
+    ultimoCalculo = r;
     var lead = leadSalvo();
     if(!lead){ return; }
     if(timerContato){ clearTimeout(timerContato); timerContato = null; }
@@ -1333,7 +1429,6 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     var corpo = comOrigem({
       _subject: 'Calculadora do site — ' + lead.empresa,
       _template: 'table', _captcha: 'false',
-      _autoresponse: textoEstudo(lead, r),
       name: lead.nome, email: lead.email,
       Nome: lead.nome, Empresa: lead.empresa, 'E-mail': lead.email, WhatsApp: lead.whatsapp,
       'Máquina atual': maquinaTexto(),
@@ -1388,6 +1483,7 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     ls(false, LEAD_KEY, JSON.stringify(lead));
     ls(false, PEND_KEY, JSON.stringify(lead));
     liberar();
+    mostraPara();
     timerContato = setTimeout(function(){ enviarContato(lead); }, 180000);
   });
 
@@ -1399,6 +1495,7 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     reenviarPendente();
     var bl = document.getElementById('calcBtn');
     if(bl) bl.textContent = 'Receber meu estudo por e-mail →';
+    mostraPara();
   }else{
     gate.hidden = false;
     document.body.classList.add('gate-travado');
