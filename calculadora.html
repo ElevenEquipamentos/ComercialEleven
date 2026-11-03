@@ -1008,8 +1008,11 @@ function drawBars(r){
 $('calcBtn').addEventListener('click',()=>{
   const r=calcular();                       // o cálculo roda sempre
   const dentro = !window.ELEVEN_INTERNO || window.ELEVEN_INTERNO();
-  render(r);                                // relatório na tela para todos
-  if(!dentro && window.ELEVEN_ENVIAR_ESTUDO) window.ELEVEN_ENVIAR_ESTUDO(r);   // visitante: também recebe o estudo em PDF por e-mail
+  if(!dentro && window.ELEVEN_ENVIAR_ESTUDO){
+    window.ELEVEN_ENVIAR_ESTUDO(r);         // visitante: resultado só por e-mail
+    return;
+  }
+  render(r);
   $('results').scrollIntoView({behavior:'smooth',block:'start'});
 });
 $('printBtn').addEventListener('click',()=>window.print());
@@ -1322,6 +1325,8 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
   }
 
   function painelConfirma(lead, r){
+    var res = document.getElementById('results');
+    if(res) res.style.display = 'none';
     var cf = document.getElementById('confirma');
     document.getElementById('cfMail').textContent = lead.email;
 
@@ -1334,6 +1339,7 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     document.getElementById('cfWpp').href = 'https://wa.me/' + WPP + '?text=' + encodeURIComponent(msg);
 
     cf.hidden = false;
+    cf.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
   var ultimoCalculo = null;
@@ -1488,13 +1494,13 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
     gate.hidden = true;
     reenviarPendente();
     var bl = document.getElementById('calcBtn');
-    if(bl) bl.textContent = 'Calcular minha economia →';
+    if(bl) bl.textContent = 'Receber meu estudo por e-mail →';
     mostraPara();
   }else{
     gate.hidden = false;
     document.body.classList.add('gate-travado');
     var bv = document.getElementById('calcBtn');
-    if(bv) bv.textContent = 'Calcular minha economia →';
+    if(bv) bv.textContent = 'Receber meu estudo por e-mail →';
     setTimeout(function(){ try{ fNome.focus(); }catch(e){} }, 120);
   }
 })();
