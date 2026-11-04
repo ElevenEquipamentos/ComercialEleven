@@ -384,6 +384,7 @@ var CLARITY_ID = "COLAR_AQUI";
           <option value="glp" selected>GLP (gás)</option>
           <option value="diesel">Diesel</option>
           <option value="gasolina">Gasolina</option>
+          <option value="chumbo">Elétrica a chumbo-ácido</option>
         </select>
       </div>
       <div class="field">
@@ -403,7 +404,26 @@ var CLARITY_ID = "COLAR_AQUI";
         <input id="diasMes" type="number" min="1" step="1" value="22">
       </div>
 
-      <div class="subhead">Consumo de combustível</div>
+      <div class="subhead" id="subConsumo">Consumo de combustível</div>
+      <div class="field" id="f_kwhChumbo" style="display:none">
+        <label>Consumo da elétrica a chumbo <span class="u">(kWh/h)</span></label>
+        <input id="kwhChumbo" type="number" min="0" step="0.1" value="3.8">
+        <small>O chumbo perde mais energia na recarga que o lítio.</small>
+      </div>
+      <div class="field" id="f_trocasBat" style="display:none">
+        <label>Trocas de bateria por dia</label>
+        <input id="trocasBat" type="number" min="0" step="1" value="1">
+        <small>Em 2 ou 3 turnos a bateria de chumbo não aguenta: troca no meio do dia.</small>
+      </div>
+      <div class="field" id="f_precoBat" style="display:none">
+        <label>Preço de uma bateria de chumbo nova <span class="u">(R$)</span></label>
+        <input id="precoBat" type="number" min="0" step="500" value="25000">
+      </div>
+      <div class="field" id="f_vidaBat" style="display:none">
+        <label>Vida útil da bateria de chumbo <span class="u">(anos)</span></label>
+        <input id="vidaBat" type="number" min="0.5" step="0.5" value="4">
+        <small>Sulfatação e falta de água encurtam a vida.</small>
+      </div>
 
       <div class="field" style="grid-column:1/-1">
         <label>Como você prefere informar o consumo?</label>
@@ -441,7 +461,7 @@ var CLARITY_ID = "COLAR_AQUI";
         </div>
         <div class="field">
           <label>Preço da energia elétrica <span class="u">(R$/kWh)</span></label>
-          <input id="precoKwh" type="number" min="0" step="0.01" value="0.95">
+          <input id="precoKwh" type="number" min="0" step="0.01" value="1.05">
         </div>
         <div class="field">
           <label>Consumo estimado da elétrica <span class="u">(kWh/h)</span></label>
@@ -449,7 +469,7 @@ var CLARITY_ID = "COLAR_AQUI";
         </div>
         <div class="field">
           <label>Manutenção do combustível <span class="u">(R$/h)</span></label>
-          <input id="manutFuel" type="number" min="0" step="0.5" value="7">
+          <input id="manutFuel" type="number" min="0" step="0.5" value="6.5">
           <small>Óleo, filtros, velas, motor, correias.</small>
         </div>
         <div class="field">
@@ -459,8 +479,8 @@ var CLARITY_ID = "COLAR_AQUI";
         </div>
         <div class="field">
           <label>Custo do operador <span class="u">(R$/h)</span></label>
-          <input id="custoOp" type="number" min="0" step="1" value="25">
-          <small>Salário + encargos, por hora.</small>
+          <input id="custoOp" type="number" min="0" step="0.5" value="17">
+          <small>Salário médio R$ 2.900 + 30% de periculosidade ÷ 220 h.</small>
         </div>
         <div class="field" id="f_perda">
           <label>Gás perdido / vazamento <span class="u">(%)</span></label>
@@ -483,7 +503,7 @@ var CLARITY_ID = "COLAR_AQUI";
     <div class="grid">
       <div class="field">
         <label>Preço da empilhadeira elétrica Eleven <span class="u">(R$)</span></label>
-        <input id="precoElec" type="number" min="0" step="500" value="145000">
+        <input id="precoElec" type="number" min="0" step="500" value="104900">
       </div>
       <div class="field">
         <label>Entrada / valor da sua máquina usada <span class="u">(R$)</span></label>
@@ -654,6 +674,7 @@ const num = id => parseFloat(($(id).value+'').replace(',','.'))||0;
 
 const FUELS = {
   glp:      {label:'GLP', unit:'kg', price:8.50, cylinders:true},
+  chumbo:   {label:'Chumbo-ácido', unit:'kWh', price:0, cylinders:false, chumbo:true},
   diesel:   {label:'Diesel', unit:'L', price:6.00, cylinders:false},
   gasolina: {label:'Gasolina', unit:'L', price:6.20, cylinders:false}
 };
@@ -661,10 +682,23 @@ const FUELS = {
 let consumoMode = 'cil';
 
 /* =================== UI DINÂMICA =================== */
-$('classe').addEventListener('change',e=>{ $('kwhH').value = e.target.value; });
+$('classe').addEventListener('change',e=>{ $('kwhH').value = e.target.value; $('kwhChumbo').value = (parseFloat(e.target.value)*1.25).toFixed(1); });
+$('turnos').addEventListener('change',e=>{ $('trocasBat').value = Math.max(0, (+e.target.value||1) - 1); });
 
 $('fuel').addEventListener('change',e=>{
   const f = FUELS[e.target.value];
+  const ch = !!f.chumbo;
+  // chumbo-ácido: sem consumo de combustível; entram energia do chumbo, trocas e reposição da bateria
+  ['subConsumo','f_cilQtd','f_cilTam','f_kgMes'].forEach(id=>{ $(id).style.display = ch ? 'none' : ''; });
+  $('segConsumo').parentElement.style.display = ch ? 'none' : '';
+  ['f_kwhChumbo','f_trocasBat','f_precoBat','f_vidaBat'].forEach(id=>{ $(id).style.display = ch ? '' : 'none'; });
+  $('precoFuel').closest('.field').style.display = ch ? 'none' : '';
+  $('manutFuel').value = ch ? '2.5' : '6.5';
+  $('manutFuel').closest('.field').querySelector('label').innerHTML = (ch ? 'Manutenção da elétrica a chumbo' : 'Manutenção do combustível') + ' <span class="u">(R$/h)</span>';
+  $('manutFuel').closest('.field').querySelector('small').textContent = ch ? 'Máquina + bateria: água, limpeza, equalização.' : 'Óleo, filtros, velas, motor, correias.';
+  $('f_troca').querySelector('label').innerHTML = (ch ? 'Tempo por troca de bateria' : 'Tempo por troca de cilindro') + ' <span class="u">(min)</span>';
+  if(ch){ $('tempoTroca').value = '15'; $('f_perda').style.display = 'none'; $('f_troca').style.display = ''; return; }
+  $('tempoTroca').value = '10';
   $('precoFuel').value = f.price.toFixed(2);
   $('lblPrecoFuel').innerHTML = 'Preço do '+f.label+' <span class="u">(R$/'+f.unit+')</span>';
   const isGlp = e.target.value==='glp';
@@ -691,6 +725,7 @@ document.querySelectorAll('#segConsumo button').forEach(btn=>{
 
 function refreshConsumoFields(){
   const fuelKey = $('fuel').value;
+  if(fuelKey==='chumbo') return;
   const isGlp = fuelKey==='glp';
   const f = FUELS[fuelKey];
   const showCil = consumoMode==='cil';
@@ -711,6 +746,7 @@ function calcular(){
   const fuelKey = $('fuel').value;
   const f = FUELS[fuelKey];
   const isGlp = fuelKey==='glp';
+  const isChumbo = fuelKey==='chumbo';
 
   const horasDia = num('horasDia');
   const diasMes  = num('diasMes');
@@ -720,7 +756,9 @@ function calcular(){
   // ---- consumo mensal de combustível (kg ou L) ----
   let consumoMes;
   const cilTam = num('cilTam');
-  if(consumoMode==='cil'){
+  if(isChumbo){
+    consumoMes = num('kwhChumbo')*horasMes;     // kWh/mês da elétrica a chumbo
+  }else if(consumoMode==='cil'){
     if(isGlp){
       consumoMes = num('cilSemana')*cilTam*(52/12);
     }else{
@@ -733,21 +771,24 @@ function calcular(){
   const consumoHora = horasMes>0 ? consumoMes/horasMes : 0;
 
   // ---- premissas ----
-  const precoFuel = num('precoFuel');
+  const precoFuel = isChumbo ? num('precoKwh') : num('precoFuel');
   const precoKwh  = num('precoKwh');
   const kwhH      = num('kwhH');
   const manutFuel = num('manutFuel');
   const manutElec = num('manutElec');
   const custoOp   = num('custoOp');
   const perdaPct  = isGlp ? num('perda')/100 : 0;
-  const tempoTroca= isGlp ? num('tempoTroca') : 0;
+  const tempoTroca= (isGlp || isChumbo) ? num('tempoTroca') : 0;
 
   // ---- CUSTOS GLP / COMBUSTÍVEL (mensal) ----
   const cFuel = consumoMes*precoFuel;
   const cManutG = manutFuel*horasMes;
-  const trocasMes = (isGlp && cilTam>0) ? consumoMes/cilTam : 0;
+  const trocasMes = isChumbo ? num('trocasBat')*diasMes : (isGlp && cilTam>0) ? consumoMes/cilTam : 0;
   const cTroca = trocasMes*(tempoTroca/60)*custoOp;
-  const totalGLP = cFuel + cManutG + cTroca;
+  // chumbo: reposição da bateria (2 baterias quando há troca no dia), por mês
+  const nBat = isChumbo ? (num('trocasBat')>0 ? 2 : 1) : 0;
+  const cBat = isChumbo && num('vidaBat')>0 ? nBat*num('precoBat')/(num('vidaBat')*12) : 0;
+  const totalGLP = cFuel + cManutG + cTroca + cBat;
   const gasPerdido = cFuel*perdaPct;
 
   // ---- CUSTOS ELÉTRICA (mensal) ----
@@ -779,7 +820,7 @@ function calcular(){
   return {
     f,isGlp,horasDia,diasMes,horasMes,horasAno,
     consumoMes,consumoAno,consumoHora,cilTam,
-    cFuel,cManutG,cTroca,trocasMes,totalGLP,gasPerdido,perdaPct,tempoTroca,
+    cFuel,cManutG,cTroca,trocasMes,totalGLP,gasPerdido,perdaPct,tempoTroca,isChumbo,cBat,nBat,
     kwhMes,cEnergia,cManutE,totalELEC,
     econMes,econAno,econPct,
     precoElec,entrada,investLiq,paybackMeses,horizonte,econHorizonte,
@@ -791,8 +832,8 @@ function calcular(){
 function paybackTexto(m){
   if(!isFinite(m)) return 'Sem retorno';
   if(m<1) return 'menos de 1 mês';
-  const anos = Math.floor(m/12), meses = Math.round(m%12);
-  if(anos===0) return Math.round(m)+' meses';
+  const t = Math.round(m), anos = Math.floor(t/12), meses = t%12;
+  if(anos===0) return t+' meses';
   return anos+' ano'+(anos>1?'s':'')+(meses>0?' e '+meses+' m'+(meses>1?'eses':'ês'):'');
 }
 
@@ -828,10 +869,15 @@ function render(r){
   $('k_paybackFoot').textContent = isFinite(r.paybackMeses) ? 'Investimento: '+BRL(r.investLiq) : '—';
 
   // Tabela
-  const rows = [
+  const rows = r.isChumbo ? [
+    ['Energia','Chumbo perde mais na recarga que o lítio', r.cFuel, r.cEnergia],
+    ['Manutenção','Água, limpeza e equalização da bateria × quase zero no lítio', r.cManutG, r.cManutE],
+    ['Reposição da bateria', r.nBat+' bateria(s) de chumbo a cada '+NUM.format(num('vidaBat'))+' anos', r.cBat, 0],
+  ] : [
     ['Combustível / Energia', r.isGlp?'Gás vs. eletricidade':'Combustível vs. eletricidade', r.cFuel, r.cEnergia],
     ['Manutenção','Óleo, filtros, velas, motor × quase zero na elétrica', r.cManutG, r.cManutE],
   ];
+  if(r.isChumbo && r.cTroca>0) rows.push(['Trocas de bateria','Máquina e operador parados no meio do turno', r.cTroca, 0]);
   if(r.isGlp){
     rows.push(['Paradas p/ troca de cilindro','Máquina e operador parados', r.cTroca, 0]);
   }
@@ -849,16 +895,21 @@ function render(r){
 
   // Custos ocultos
   const hc=[];
-  if(r.isGlp){
+  if(r.isChumbo){
+    hc.push(['🔋','Reposição da bateria', r.cBat*12, 'Bateria de chumbo dura poucos anos e perde capacidade com sulfatação. O lítio acompanha a máquina.']);
+    if(r.cTroca>0) hc.push(['⏸','Trocas de bateria', r.cTroca*12, '≈ '+NUM.format(r.trocasMes)+' trocas/mês com máquina e operador parados. O lítio recarrega nas pausas.']);
+    hc.push(['💧','Água, limpeza e equalização', r.cManutG*12, 'Completar água, limpar ácido e equalizar a carga. Esquecer custa a bateria.']);
+    hc.push(['🏭','Sala de bateria', 0, 'Área exclusiva com ventilação (a recarga solta hidrogênio), piso antiácido, lava-olhos e EPI contra ácido sulfúrico.']);
+  }else if(r.isGlp){
     hc.push(['💨','Gás que vaza / desperdiça', r.gasPerdido*12, NUM.format(r.perdaPct*100)+'% do gás vira prejuízo: vazamentos, cilindros parciais e evaporação. Por ano.']);
     const horasParada = r.trocasMes*(r.tempoTroca/60)*12;
     hc.push(['⏸','Paradas para trocar cilindro', r.cTroca*12, '≈ '+NUM.format(r.trocasMes)+' trocas/mês · '+NUM.format(horasParada)+' h/ano de máquina + operador parados. A elétrica só recarrega.']);
   }else{
     hc.push(['💨','Perdas de combustível', r.cFuel*0.03*12, 'Evaporação e reabastecimento. A elétrica não tem esse desperdício.']);
   }
-  hc.push(['🔧','Manutenção do motor', r.cManutG*12, 'Motor a combustão exige óleo, filtros, velas e revisões constantes. O lítio praticamente elimina isso.']);
-  hc.push(['🌫️','Ambiente & saúde', 0, 'Sem gases de escape, sem ruído e sem calor do motor — melhor para o operador e para áreas fechadas/refrigeradas.']);
-  hc.push(['📉','Máquina mais lenta e mais falha', 0, 'Combustão perde potência com o cilindro acabando e quebra mais. A elétrica entrega torque constante o dia todo.']);
+  if(!r.isChumbo) hc.push(['🔧','Manutenção do motor', r.cManutG*12, 'Motor a combustão exige óleo, filtros, velas e revisões constantes. O lítio praticamente elimina isso.']);
+  if(!r.isChumbo) hc.push(['🌫️','Ambiente & saúde', 0, 'Sem gases de escape, sem ruído e sem calor do motor — melhor para o operador e para áreas fechadas/refrigeradas.']);
+  hc.push(['📉','Máquina mais lenta e mais falha', 0, r.isChumbo ? 'O chumbo perde força conforme descarrega. O lítio entrega o mesmo desempenho do início ao fim da carga.' : 'Combustão perde potência com o cilindro acabando e quebra mais. A elétrica entrega torque constante o dia todo.']);
   let hch='';
   hc.forEach(([ic,t,v,d])=>{
     hch+='<div class="hc"><div class="ic">'+ic+'</div><div class="t">'+t+'</div>'+
@@ -964,6 +1015,7 @@ function drawBars(r){
     ['Manutenção', r.cManutG, r.cManutE],
   ];
   if(r.isGlp) cats.push(['Troca cilindro', r.cTroca, 0]);
+  if(r.isChumbo){ if(r.cTroca>0) cats.push(['Troca bateria', r.cTroca, 0]); cats.push(['Reposição bateria', r.cBat, 0]); }
   cats.push(['TOTAL', r.totalGLP, r.totalELEC]);
 
   const W=760,H=320,P={l:64,r:16,t:16,b:56};
@@ -1414,6 +1466,7 @@ var ELEVEN_API_LEADS = 'https://vendas.comercialeleven.com/api/leads';   // port
       payback_texto: paybackTexto(r.paybackMeses),
       // detalhamento para o Estudo de Economia em PDF (montado no portal)
       combustivel_id: document.getElementById('fuel').value,
+      custo_bateria: r.cBat, baterias: r.nBat, preco_bateria: r.isChumbo ? num('precoBat') : 0, vida_bateria: r.isChumbo ? num('vidaBat') : 0,
       horas_mes: r.horasMes, consumo_hora: r.consumoHora,
       custo_combustivel: r.cFuel, custo_manut_hoje: r.cManutG, custo_troca: r.cTroca, trocas_mes: r.trocasMes,
       gas_perdido: r.gasPerdido, perda_pct: r.perdaPct * 100, tempo_troca: r.tempoTroca, custo_operador: r.custoOp,
