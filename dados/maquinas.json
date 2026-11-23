@@ -1,0 +1,727 @@
+{
+ "atualizadoEm": "2026-11-23T17:54:46.210Z",
+ "cfg": {
+  "parcelas": 18,
+  "acrescimo": 0.129,
+  "prazo": 45,
+  "frete": "a combinar",
+  "wpp": "5541997394180",
+  "email": "vendas_epbrasil@comercialeleven.com",
+  "garBat": "7 anos",
+  "tipo": {
+   "contra": "Contrabalançada",
+   "patol": "Patolada",
+   "trans": "Transpaleteira",
+   "retr": "Retrátil",
+   "outro": "Outro"
+  },
+  "ener": {
+   "litio": "Lítio",
+   "chumbo": "Chumbo-ácido",
+   "diesel": "Diesel",
+   "glp": "GLP"
+  }
+ },
+ "prods": [
+  {
+   "id": "EB30L",
+   "n": "Eleven EB3.0L",
+   "tipo": "contra",
+   "energia": "litio",
+   "cap": 3000,
+   "mastro": 4800,
+   "av": 99999.99,
+   "parc": 6272.22,
+   "est": 5,
+   "icms12": true,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.000 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "5.375 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "80V / 205Ah Li-Ion",
+    "Carregador": "220V/35A ou 380V Trifásico",
+    "Motor de tração": "AC 10 kW (S2 60min)",
+    "Motor de elevação": "16 kW (S3 15%)",
+    "Peso operacional": "4.450 kg",
+    "Comprimento": "3.735 mm",
+    "Raio de giro": "2.217 mm",
+    "Rampa": "15% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "11 km/h",
+    "Garfos": "45×122×1.070 mm"
+   },
+   "pitch": "A elétrica de 3 t que substitui a diesel no pátio.",
+   "hi": [
+    "Bateria 80V 205Ah: carrega no intervalo e roda o turno",
+    "IP66 de série: chuva, lavação e pátio aberto",
+    "Zero cilindro, zero fumaça, zero troca de óleo"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/8fa0212e1ae10673.webp",
+     "p": "../fotos/maquinas/8fa0212e1ae10673-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/6ec763c3a8548ea8.webp",
+     "p": "../fotos/maquinas/6ec763c3a8548ea8-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EB30L-6M",
+   "n": "Eleven EB3.0L · mastro 6,0 m",
+   "tipo": "contra",
+   "energia": "litio",
+   "cap": 3000,
+   "mastro": 6000,
+   "av": 119000,
+   "parc": 7463.94,
+   "est": 1,
+   "icms12": true,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.000 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "6.000 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "80V / 205Ah Li-Ion",
+    "Carregador": "220V/35A ou 380V Trifásico",
+    "Motor de tração": "AC 10 kW (S2 60min)",
+    "Motor de elevação": "16 kW (S3 15%)",
+    "Peso operacional": "4.450 kg",
+    "Comprimento": "3.735 mm",
+    "Raio de giro": "2.217 mm",
+    "Rampa": "15% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "11 km/h",
+    "Garfos": "45×122×1.070 mm"
+   },
+   "pitch": "A EB3.0L com torre de 6 metros para porta-paletes mais alto.",
+   "hi": [
+    "Eleva 6,0 m sem trocar de classe de máquina",
+    "IP66 de série: chuva, lavação e pátio aberto",
+    "Mesma bateria 80V 205Ah, mesmo chassi compacto"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/8fa0212e1ae10673.webp",
+     "p": "../fotos/maquinas/8fa0212e1ae10673-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/6ec763c3a8548ea8.webp",
+     "p": "../fotos/maquinas/6ec763c3a8548ea8-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EB35L",
+   "n": "Eleven EB3.5L",
+   "tipo": "contra",
+   "energia": "litio",
+   "cap": 3500,
+   "mastro": 4800,
+   "av": 129000,
+   "parc": 8091.17,
+   "est": 1,
+   "icms12": true,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.500 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "5.375 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "80V / 205Ah Li-Ion",
+    "Carregador": "Externo 80V / 100A",
+    "Motor de tração": "AC 10 kW (S2 60min)",
+    "Motor de elevação": "16 kW (S3 15%)",
+    "Peso operacional": "4.450 kg",
+    "Comprimento": "2.640 mm",
+    "Raio de giro": "2.217 mm",
+    "Rampa": "15% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "11 km/h",
+    "Garfos": "45×122×1.070 mm"
+   },
+   "pitch": "3,5 t no chassi compacto da EB3.0L.",
+   "hi": [
+    "Para bobinas, big-bags e cargas mais densas",
+    "IP66 de série: chuva, lavação e pátio aberto",
+    "Bateria 80V 205Ah, recarga de oportunidade"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/8fa0212e1ae10673.webp",
+     "p": "../fotos/maquinas/8fa0212e1ae10673-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/6ec763c3a8548ea8.webp",
+     "p": "../fotos/maquinas/6ec763c3a8548ea8-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EX35L",
+   "n": "Eleven EX3.5L",
+   "tipo": "contra",
+   "energia": "litio",
+   "cap": 3500,
+   "mastro": 4800,
+   "av": 149900,
+   "parc": 9402.06,
+   "est": 1,
+   "icms12": true,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.500 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "5.375 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "80V / 280Ah Li-Ion (modular até 560Ah)",
+    "Carregador": "Carregador embutido · Opportunity Charging",
+    "Motor de tração": "AC 16 kW (S2 60min)",
+    "Motor de elevação": "30 kW (S3 15%)",
+    "Peso operacional": "5.020 kg",
+    "Comprimento": "2.754 mm",
+    "Raio de giro": "2.498 mm",
+    "Rampa": "18% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "16 km/h",
+    "Garfos": "50×122×1.220 mm"
+   },
+   "pitch": "3,5 t para operação de 2 e 3 turnos.",
+   "hi": [
+    "Bateria modular 280Ah, expansível a 560Ah",
+    "Tração de 16 kW: rampa de 18% com carga",
+    "IP66 de série, 16 km/h com carga"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/ad3d7856dd4e03ba.webp",
+     "p": "../fotos/maquinas/ad3d7856dd4e03ba-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/97e86967e13f903f.webp",
+     "p": "../fotos/maquinas/97e86967e13f903f-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ET30D",
+   "n": "Eleven ET3.0D",
+   "tipo": "contra",
+   "energia": "diesel",
+   "cap": 3000,
+   "mastro": 4800,
+   "av": 104900,
+   "parc": 6579.56,
+   "est": 1,
+   "icms12": false,
+   "gar": [
+    24,
+    1000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.000 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "5.375 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "Xinchai C490BPG · 4 cil. · 36,8 kW",
+    "Carregador": "Tanque 70 L · Consumo ~0,6 L/h",
+    "Motor de tração": "Diesel 36,8 kW @ 2.400rpm",
+    "Motor de elevação": "Bomba hidráulica 17,5 MPa",
+    "Peso operacional": "4.120 kg",
+    "Comprimento": "2.710 mm",
+    "Raio de giro": "2.500 mm",
+    "Rampa": "20% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "20 km/h",
+    "Garfos": "45×125×1.070 mm"
+   },
+   "pitch": "Diesel de 3 t para quem precisa de combustão.",
+   "hi": [
+    "Motor Xinchai 4 cilindros, 36,8 kW",
+    "Rampa de 20% com carga, 20 km/h",
+    "Peças e técnico em Pinhais"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/e969f9cbf96aaca3.webp",
+     "p": "../fotos/maquinas/e969f9cbf96aaca3-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/a0eba7a2231a5c94.webp",
+     "p": "../fotos/maquinas/a0eba7a2231a5c94-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ET35D-48M",
+   "n": "Eleven ET3.5D · mastro 4,8 m",
+   "tipo": "contra",
+   "energia": "diesel",
+   "cap": 3500,
+   "mastro": 4800,
+   "av": 100000,
+   "parc": 6272.22,
+   "est": 2,
+   "icms12": false,
+   "gar": [
+    24,
+    1000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.500 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "4.800 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "Xinchai C490BPG · 4 cil. · 36,8 kW",
+    "Carregador": "Tanque 70 L · Consumo ~0,6 L/h",
+    "Motor de tração": "Diesel 36,8 kW @ 2.400rpm",
+    "Motor de elevação": "Bomba hidráulica 17,5 MPa",
+    "Peso operacional": "4.400 kg",
+    "Comprimento": "2.760 mm",
+    "Raio de giro": "2.550 mm",
+    "Rampa": "20% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "20 km/h",
+    "Garfos": "50×125×1.220 mm"
+   },
+   "pitch": "3,5 t diesel com torre de 4,8 m.",
+   "hi": [
+    "Motor Xinchai 4 cilindros, 36,8 kW",
+    "Rampa de 20% com carga, pátio e caminhão",
+    "Peças e técnico em Pinhais"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/e969f9cbf96aaca3.webp",
+     "p": "../fotos/maquinas/e969f9cbf96aaca3-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/a0eba7a2231a5c94.webp",
+     "p": "../fotos/maquinas/a0eba7a2231a5c94-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ET35D-6M",
+   "n": "Eleven ET3.5D · mastro 6,0 m",
+   "tipo": "contra",
+   "energia": "diesel",
+   "cap": 3500,
+   "mastro": 6000,
+   "av": 110000,
+   "parc": 6899.44,
+   "est": 2,
+   "icms12": false,
+   "gar": [
+    24,
+    1000
+   ],
+   "ficha": {
+    "Capacidade de carga": "3.500 kg",
+    "Centro de carga": "500 mm",
+    "Torre / elevação": "6.000 mm",
+    "Elevação livre": "1.565 mm",
+    "Mastro recolhido": "2.280 mm",
+    "Bateria / energia": "Xinchai C490BPG · 4 cil. · 36,8 kW",
+    "Carregador": "Tanque 70 L · Consumo ~0,6 L/h",
+    "Motor de tração": "Diesel 36,8 kW @ 2.400rpm",
+    "Motor de elevação": "Bomba hidráulica 17,5 MPa",
+    "Peso operacional": "4.400 kg",
+    "Comprimento": "2.760 mm",
+    "Raio de giro": "2.550 mm",
+    "Rampa": "20% c/ carga",
+    "Pneus": "Pneumático",
+    "Velocidade c/ carga": "20 km/h",
+    "Garfos": "50×125×1.220 mm"
+   },
+   "pitch": "3,5 t diesel com torre de 6,0 m.",
+   "hi": [
+    "Eleva 6,0 m com 3,5 t de capacidade",
+    "Motor Xinchai 4 cilindros, 36,8 kW",
+    "Peças e técnico em Pinhais"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/e969f9cbf96aaca3.webp",
+     "p": "../fotos/maquinas/e969f9cbf96aaca3-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/a0eba7a2231a5c94.webp",
+     "p": "../fotos/maquinas/a0eba7a2231a5c94-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EW16L",
+   "n": "Eleven EW1.6L",
+   "tipo": "patol",
+   "energia": "litio",
+   "cap": 1600,
+   "mastro": 5500,
+   "av": 71900,
+   "parc": 4509.73,
+   "est": 0,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "1.600 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "6.030 mm",
+    "Elevação livre": "1.510 mm",
+    "Mastro recolhido": "2.030 mm",
+    "Bateria / energia": "24V / 205Ah Li-Ion",
+    "Carregador": "Integrado",
+    "Motor de tração": "2,2 kW (AC)",
+    "Motor de elevação": "3,0 kW",
+    "Peso operacional": "1.100 kg",
+    "Comprimento": "1.795 mm",
+    "Raio de giro": "1.463 mm",
+    "Rampa": "8% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "5 km/h",
+    "Garfos": "60×180×1.150 mm"
+   },
+   "pitch": "Patolada de 1,6 t com torre de 6 m para corredor estreito.",
+   "hi": [
+    "Eleva 6,03 m com 1,1 t de peso próprio",
+    "Raio de giro de 1,46 m: entra onde a contrabalançada não entra",
+    "Bateria de lítio 24V 205Ah"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/44c9271d6da4348a.webp",
+     "p": "../fotos/maquinas/44c9271d6da4348a-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/fd74c016ddd37d86.webp",
+     "p": "../fotos/maquinas/fd74c016ddd37d86-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ERS16L",
+   "n": "Eleven ERS1.6L",
+   "tipo": "patol",
+   "energia": "litio",
+   "cap": 1600,
+   "mastro": 5500,
+   "av": 67000,
+   "parc": 4202.39,
+   "est": 1,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "1.600 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "6.030 mm",
+    "Elevação livre": "1.510 mm",
+    "Mastro recolhido": "2.030 mm",
+    "Bateria / energia": "24V / 205Ah Li-Ion",
+    "Carregador": "Plugue externo · Carga completa em até 2h",
+    "Motor de tração": "3,0 kW",
+    "Motor de elevação": "3,0 kW",
+    "Peso operacional": "1.260 kg",
+    "Comprimento": "1.961 mm",
+    "Raio de giro": "1.730 mm",
+    "Rampa": "8% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "6 km/h",
+    "Garfos": "60×180×1.150 mm"
+   },
+   "pitch": "Patolada de 1,6 t com plataforma: o operador vai embarcado.",
+   "hi": [
+    "Mais rápida em percursos longos de armazém",
+    "Torre de 6,03 m, 1,6 t",
+    "Bateria de lítio 24V 205Ah"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/996d90a7d516c2bb.webp",
+     "p": "../fotos/maquinas/996d90a7d516c2bb-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/9e6a563fbb01a971.webp",
+     "p": "../fotos/maquinas/9e6a563fbb01a971-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ES15L",
+   "n": "Eleven ES1.5L",
+   "tipo": "patol",
+   "energia": "litio",
+   "cap": 1500,
+   "mastro": 3900,
+   "av": 22900,
+   "parc": 1436.34,
+   "est": 1,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "1.500 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "3.300 mm",
+    "Elevação livre": "0 mm",
+    "Mastro recolhido": "1.567 mm",
+    "Bateria / energia": "24V / 80Ah AGM",
+    "Carregador": "10A Integrado · 220V Convencional",
+    "Motor de tração": "DC 0,8 kW",
+    "Motor de elevação": "Bomba elétrica 1,1 kW",
+    "Peso operacional": "530 kg",
+    "Comprimento": "1.727 mm",
+    "Raio de giro": "1.450 mm",
+    "Rampa": "5% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "4,5 km/h",
+    "Garfos": "1.150×570 mm"
+   },
+   "pitch": "A entrada de gama para empilhar até 3,3 m.",
+   "hi": [
+    "1,5 t, 530 kg de peso próprio",
+    "Carga e descarga leve, docas e estoque pequeno",
+    "Bateria selada, sem manutenção"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/5e6dc0b0c50b6b4f.webp",
+     "p": "../fotos/maquinas/5e6dc0b0c50b6b4f-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/2bf72ec03c8fc0b2.webp",
+     "p": "../fotos/maquinas/2bf72ec03c8fc0b2-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EF20L",
+   "n": "Eleven EF2.0L",
+   "tipo": "trans",
+   "energia": "litio",
+   "cap": 2000,
+   "mastro": 210,
+   "av": 12900,
+   "parc": 809.12,
+   "est": 10,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "2.000 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "295 mm",
+    "Elevação livre": "0 mm",
+    "Mastro recolhido": "85 mm",
+    "Bateria / energia": "48V / 20Ah Li-Ion (2× 24V plug-in)",
+    "Carregador": "24V-5A Externo (x2)",
+    "Motor de tração": "BLDC 0,9 kW",
+    "Motor de elevação": "Bomba elétrica 0,7 kW",
+    "Peso operacional": "140 kg",
+    "Comprimento": "1.550 mm",
+    "Raio de giro": "1.360 mm",
+    "Rampa": "8% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "4,5 km/h",
+    "Garfos": "50×150×1.150 mm"
+   },
+   "pitch": "Transpaleteira de 2 t com bateria plug-in.",
+   "hi": [
+    "Troca a bateria em segundos, sem parar a operação",
+    "140 kg: sobe em caminhão e doca",
+    "2 módulos de lítio 24V 20Ah"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/016ac683d142229a.webp",
+     "p": "../fotos/maquinas/016ac683d142229a-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/e410eb4956f78927.webp",
+     "p": "../fotos/maquinas/e410eb4956f78927-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EF15L",
+   "n": "Eleven EF1.5L",
+   "tipo": "trans",
+   "energia": "litio",
+   "cap": 1500,
+   "mastro": 210,
+   "av": 7900,
+   "parc": 495.51,
+   "est": 10,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "1.500 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "292 mm",
+    "Elevação livre": "0 mm",
+    "Mastro recolhido": "82 mm",
+    "Bateria / energia": "24V / 20Ah Li-Ion (1 a 4 módulos plug-in)",
+    "Carregador": "24V-4A Externo",
+    "Motor de tração": "DC 0,75 kW",
+    "Motor de elevação": "Bomba manual/elétrica 0,5 kW",
+    "Peso operacional": "120 kg",
+    "Comprimento": "1.550 mm",
+    "Raio de giro": "1.360 mm",
+    "Rampa": "5% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "4 km/h",
+    "Garfos": "55×150×1.150 mm"
+   },
+   "pitch": "A transpaleteira elétrica que cabe em qualquer operação.",
+   "hi": [
+    "120 kg: sobe em caminhão e doca",
+    "De 1 a 4 módulos de lítio plug-in",
+    "1,5 t de capacidade, 4 km/h com carga"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/66e91e87195adb92.webp",
+     "p": "../fotos/maquinas/66e91e87195adb92-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/8b5882c95bdf3e96.webp",
+     "p": "../fotos/maquinas/8b5882c95bdf3e96-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "EF15L-GC",
+   "n": "Eleven EF1.5L · garfos curtos",
+   "tipo": "trans",
+   "energia": "litio",
+   "cap": 1500,
+   "mastro": 210,
+   "av": 9900,
+   "parc": 620.95,
+   "est": 2,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "1.500 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "292 mm",
+    "Elevação livre": "0 mm",
+    "Mastro recolhido": "82 mm",
+    "Bateria / energia": "24V / 20Ah Li-Ion (1 a 4 módulos plug-in)",
+    "Carregador": "24V-4A Externo",
+    "Motor de tração": "DC 0,75 kW",
+    "Motor de elevação": "Bomba manual/elétrica 0,5 kW",
+    "Peso operacional": "120 kg",
+    "Comprimento": "1.550 mm",
+    "Raio de giro": "1.360 mm",
+    "Rampa": "5% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "4 km/h",
+    "Garfos": "55×150×1.150 mm"
+   },
+   "pitch": "A EF1.5L com garfos curtos para palete pequeno e baú.",
+   "hi": [
+    "Garfos curtos: manobra em baú e corredor apertado",
+    "De 1 a 4 módulos de lítio plug-in",
+    "1,5 t, 120 kg de peso próprio"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/66e91e87195adb92.webp",
+     "p": "../fotos/maquinas/66e91e87195adb92-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/8b5882c95bdf3e96.webp",
+     "p": "../fotos/maquinas/8b5882c95bdf3e96-p.webp"
+    }
+   ]
+  },
+  {
+   "id": "ERQ20L",
+   "n": "Eleven ERQ2.0L",
+   "tipo": "retr",
+   "energia": "litio",
+   "cap": 2000,
+   "mastro": 7500,
+   "av": 279000,
+   "parc": 17499.5,
+   "est": 0,
+   "icms12": false,
+   "gar": [
+    36,
+    2000
+   ],
+   "ficha": {
+    "Capacidade de carga": "2.000 kg",
+    "Centro de carga": "600 mm",
+    "Torre / elevação": "9.500 mm",
+    "Elevação livre": "1.712 mm",
+    "Mastro recolhido": "3.219 mm",
+    "Bateria / energia": "48V / 360Ah Li-Ion",
+    "Carregador": "48V-200A Externo · Carga rápida",
+    "Motor de tração": "AC 7 kW (S2 60min)",
+    "Motor de elevação": "20 kW (S3 15%)",
+    "Peso operacional": "3.510 kg",
+    "Comprimento": "2.463 mm",
+    "Raio de giro": "1.770 mm",
+    "Rampa": "10% c/ carga",
+    "Pneus": "Poliuretano",
+    "Velocidade c/ carga": "10 km/h",
+    "Garfos": "40×120×1.070 mm"
+   },
+   "pitch": "Retrátil de 2 t com torre de 9,5 m: verticaliza o armazém.",
+   "hi": [
+    "Eleva 9,5 m com 2 t de capacidade",
+    "Bateria de lítio 48V 360Ah para turno cheio",
+    "Raio de giro de 1,77 m"
+   ],
+   "fotos": [
+    {
+     "g": "../fotos/maquinas/f72dda8e1456e3c2.webp",
+     "p": "../fotos/maquinas/f72dda8e1456e3c2-p.webp"
+    },
+    {
+     "g": "../fotos/maquinas/cce16a65fd6d7a7e.webp",
+     "p": "../fotos/maquinas/cce16a65fd6d7a7e-p.webp"
+    }
+   ]
+  }
+ ]
+}
